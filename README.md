@@ -1,5 +1,8 @@
 # dotfiles
 
+- gruvbox vim colorscheme
+- go mono nerd font
+
 .vimrc
 - using native vim packages
 - for fzf and buffer workflow
