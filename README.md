@@ -2,6 +2,13 @@
 
 I figured I should get into getting a consistent setup across different laptops. This is my journey.
 
+## TODO
+
+1. Sync up git config
+2. Add mac customizations across setups https://mac.install.guide/mac-setup/
+3. Add applications to Brewfile
+4. Look into GNU Stow for dotfiles
+
 ## Peripherals
 
 Currently using a glove80 split keyboard. Using the TailorKey layout and QWERTY
