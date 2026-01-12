@@ -26,7 +26,7 @@ return {
 
         map('<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
         map('<leader>ca', vim.lsp.buf.code_action, 'Code action', { 'n', 'x' })
-        map('gD', vim.lsp.buf.declaration, 'Go to declaration')
+        -- gd, gD, gr, gI handled by snacks picker (see snacks.lua)
 
         -- Helper: check if LSP client supports a method (handles 0.10 vs 0.11 API)
         local function client_supports_method(client, method, bufnr)
@@ -175,7 +175,7 @@ return {
       -- GraphQL
       graphql = {},
 
-      -- TypeScript/JavaScript (vtsls = Vue TypeScript Language Server fork)
+      -- TypeScript/JavaScript (vtsls = fast TS server, alternative to ts_ls)
       vtsls = {
         filetypes = {
           'javascript',
@@ -219,26 +219,36 @@ return {
 
       -- ESLint (linting for JS/TS)
       eslint = {
-        enable = true,
-        format = { enable = true },
-        packageManager = 'yarn',
-        autoFixOnSave = true,
-        codeActionsOnSave = { mode = 'all', rules = { '!debugger', '!no-only-tests/*' } },
-        lintTask = { enable = true },
+        settings = {
+          packageManager = 'yarn',
+          codeActionOnSave = { enable = true, mode = 'all' },
+          -- formatting disabled - conform handles it with prettier
+        },
       },
 
       -- Ruby: Sorbet (type checker)
       sorbet = {
-        cmd = { 'bundle', 'exec', 'srb', 'tc', '--lsp' },
+        cmd = {
+          'bundle', 'exec', 'srb', 'tc', '--lsp',
+          '--enable-all-experimental-lsp-features', -- completion, go-to-def, find refs
+        },
         filetypes = { 'ruby' },
         capabilities = capabilities,
+        -- root_dir: sorbet needs sorbet/ dir to work
+        root_markers = { 'sorbet/config', 'Gemfile' },
       },
 
       -- Ruby: Rubocop (linter/formatter)
       rubocop = {
-        cmd = { 'bundle', 'exec', 'rubocop', '--lsp', '--no-server' },
+        cmd = { 'bundle', 'exec', 'rubocop', '--lsp' },
         filetypes = { 'ruby' },
         capabilities = capabilities,
+        init_options = {
+          safeAutocorrect = true, -- only apply safe corrections (no unsafe cops)
+        },
+        on_attach = function(client)
+          client.server_capabilities.hoverProvider = false -- sorbet handles hover
+        end,
       },
 
       -- Python: basedpyright (type checker, pyright fork)
