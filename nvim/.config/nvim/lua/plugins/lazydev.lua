@@ -1,13 +1,13 @@
+-- Lazydev: Lua LSP enhancement for neovim config development
+-- Provides completions, type hints, and docs for vim.*, vim.api.*, plugin APIs
+-- Only loads for lua files (ft = 'lua')
 return {
-  -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-  -- used for completion, annotations and signatures of Neovim apis
   'folke/lazydev.nvim',
-  ft = 'lua',
+  ft = 'lua', -- only load for lua files
   opts = {
     library = {
-      -- Load luvit types when the `vim.uv` word is found
-      { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-      { path = 'snacks.nvim', words = { 'Snacks' } },
+      { path = '${3rd}/luv/library', words = { 'vim%.uv' } }, -- libuv bindings (async I/O)
+      { path = 'snacks.nvim', words = { 'Snacks' } }, -- snacks.nvim types
     },
   },
 }

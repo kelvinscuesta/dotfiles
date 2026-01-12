@@ -1,3 +1,6 @@
+-- Dropbar: breadcrumb navigation in the winbar (top of window)
+-- Shows: file > class > function > scope - click or use keymaps to navigate
+-- Keymaps: <leader>; pick symbol, [; go to context start, ]; next context
 return {
   {
     'Bekaboo/dropbar.nvim',

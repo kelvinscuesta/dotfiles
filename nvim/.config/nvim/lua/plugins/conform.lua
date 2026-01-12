@@ -1,42 +1,43 @@
-return { -- Autoformat
+-- Conform: code formatter that runs external tools (prettier, stylua, etc.)
+-- Formats on save and provides <leader>f for manual formatting
+-- Falls back to LSP formatting if no formatter configured
+return {
   'stevearc/conform.nvim',
-  event = { 'BufWritePre' },
-  cmd = { 'ConformInfo' },
+  event = { 'BufWritePre' }, -- load before saving (for format on save)
+  cmd = { 'ConformInfo' }, -- :ConformInfo shows active formatters
   keys = {
     {
       '<leader>f',
       function()
         require('conform').format { async = true, lsp_format = 'fallback' }
       end,
-      mode = '',
-      desc = '[F]ormat buffer',
+      mode = '', -- all modes
+      desc = 'Format buffer',
     },
   },
   opts = {
-    notify_on_error = false,
+    notify_on_error = false, -- don't show error notifications
+
+    -- Format on Save: runs before writing buffer
     format_on_save = function(bufnr)
-      -- Disable "format_on_save lsp_fallback" for languages that don't
-      -- have a well standardized coding style. You can add additional
-      -- languages here or re-enable it for the disabled ones.
+      -- disable for languages without standardized style
       local disable_filetypes = { c = true, cpp = true }
       local lsp_format_opt
       if disable_filetypes[vim.bo[bufnr].filetype] then
         lsp_format_opt = 'never'
       else
-        lsp_format_opt = 'fallback'
+        lsp_format_opt = 'fallback' -- use LSP if no formatter
       end
       return {
         timeout_ms = 500,
         lsp_format = lsp_format_opt,
       }
     end,
+
+    -- Formatters by Filetype
+    -- stop_after_first: try prettierd, fall back to prettier if unavailable
     formatters_by_ft = {
       lua = { 'stylua' },
-
-      -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
-      --
-      -- You can use 'stop_after_first' to run the first available formatter from the list
       javascript = { 'prettierd', 'prettier', stop_after_first = true },
       typescript = { 'prettierd', 'prettier', stop_after_first = true },
       javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },

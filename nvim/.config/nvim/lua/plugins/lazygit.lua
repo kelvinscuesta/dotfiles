@@ -1,19 +1,17 @@
+-- Lazygit: terminal UI for git (opens in floating window)
+-- Full-featured git client: stage, commit, push, rebase, stash, etc.
+-- Keymap: <leader>lg opens lazygit
 return {
   'kdheepak/lazygit.nvim',
-  lazy = true,
+  lazy = true, -- only load when needed
   cmd = {
-    'LazyGit',
-    'LazyGitConfig',
-    'LazyGitCurrentFile',
-    'LazyGitFilter',
-    'LazyGitFilterCurrentFile',
+    'LazyGit', -- open lazygit for repo
+    'LazyGitConfig', -- open lazygit config
+    'LazyGitCurrentFile', -- open with current file's history
+    'LazyGitFilter', -- open with commit filter
+    'LazyGitFilterCurrentFile', -- filter commits for current file
   },
-  -- optional for floating window border decoration
-  dependencies = {
-    'nvim-lua/plenary.nvim',
-  },
-  -- setting the keybinding for LazyGit with 'keys' is recommended in
-  -- order to load the plugin when the command is run for the first time
+  dependencies = { 'nvim-lua/plenary.nvim' }, -- for floating window borders
   keys = {
     { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
   },
