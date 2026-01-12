@@ -1,74 +1,88 @@
-vim.g.have_nerd_font = true
-vim.opt.termguicolors = true
+-- Fonts & Colors
+vim.g.have_nerd_font = true -- enable nerd font icons throughout config
+vim.opt.termguicolors = true -- use 24-bit RGB colors in terminal
 
-vim.opt.number = true
-vim.opt.relativenumber = true
+-- Line Numbers
+vim.opt.number = true -- show absolute line number on current line
+vim.opt.relativenumber = true -- show relative line numbers for easy jumping (e.g., 5j)
 
-vim.opt.mouse = 'a'
+-- Mouse
+vim.opt.mouse = 'a' -- enable mouse in all modes (normal, visual, insert, command)
 
-vim.opt.showmode = false
+-- Mode Display
+vim.opt.showmode = false -- hide mode text (e.g., "-- INSERT --"), statusline handles it
 
+-- Clipboard
 vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
+  vim.opt.clipboard = 'unnamedplus' -- use system clipboard for yank/paste (scheduled to avoid startup delay)
 end)
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+-- Indentation
+vim.opt.tabstop = 4 -- number of spaces a <Tab> counts for
+vim.opt.softtabstop = 4 -- number of spaces for <Tab> in editing operations
+vim.opt.shiftwidth = 4 -- number of spaces for each indent level
+vim.opt.expandtab = true -- convert tabs to spaces
+vim.opt.smartindent = true -- auto-indent new lines based on syntax
 
-vim.opt.smartindent = true
+-- Line Wrapping
+vim.opt.wrap = false -- don't wrap long lines (scroll horizontally instead)
 
-vim.opt.wrap = false
+-- File Backup & Undo
+vim.opt.swapfile = false -- don't create swap files (prevents .swp clutter)
+vim.opt.backup = false -- don't create backup files
+vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir' -- persistent undo history location
+vim.opt.undofile = true -- save undo history to file (persists across sessions)
 
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir'
-vim.opt.undofile = true
+-- Search
+vim.opt.hlsearch = false -- don't highlight all search matches (less visual noise)
+vim.opt.incsearch = true -- show matches as you type search pattern
+vim.opt.ignorecase = true -- case-insensitive search by default
+vim.opt.smartcase = true -- case-sensitive if search contains uppercase
+vim.opt.inccommand = 'split' -- live preview of :substitute in split window
 
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
-vim.opt.ignorecase = true -- search case insensitive
-vim.opt.smartcase = true -- search matters if capital letter
-vim.opt.inccommand = 'split' -- "for incsearch while sub
+-- Scrolling & Cursor
+vim.opt.scrolloff = 8 -- keep 8 lines visible above/below cursor when scrolling
+vim.opt.sidescrolloff = 8 -- keep 8 columns visible left/right of cursor
+vim.opt.signcolumn = 'yes' -- always show sign column (prevents text shifting)
+vim.opt.cursorline = true -- highlight the current line
 
-vim.opt.scrolloff = 8
-vim.opt.sidescrolloff = 8
-vim.opt.signcolumn = 'yes'
-vim.opt.cursorline = true
+-- Window Splits
+vim.opt.splitright = true -- open vertical splits to the right
+vim.opt.splitbelow = true -- open horizontal splits below
 
-vim.opt.splitright = true
-vim.opt.splitbelow = true
+-- Timing
+vim.opt.updatetime = 50 -- faster CursorHold events (default 4000ms), improves responsiveness
+vim.opt.timeoutlen = 300 -- time to wait for mapped sequence (ms), affects which-key popup
 
-vim.opt.updatetime = 50
-vim.opt.timeoutlen = 300 -- Decrease mapped sequence wait time
+-- Whitespace Display
+vim.opt.list = true -- show invisible characters
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' } -- symbols for tab, trailing space, non-breaking space
 
--- Sets how neovim will display certain whitespace characters in the editor.
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
--- set these off since handled by other plugins now
+-- Syntax (disabled, treesitter handles highlighting)
 vim.opt.syntax = 'off'
 vim.cmd.syntax 'manual'
 
-vim.opt.foldenable = false
+-- Folding
+vim.opt.foldenable = false -- start with all folds open
 
-vim.opt.spell = false
+-- Spell Check
+vim.opt.spell = false -- disable spell checking by default
 
--- turn this on when needing to investigate, otherwise it hurts performance
+-- LSP Logging (enable for debugging, impacts performance)
 --vim.lsp.set_log_level 'on'
 
--- https://vi.stackexchange.com/a/5318/12823
-vim.g.matchparen_timeout = 2
-vim.g.matchparen_insert_timeout = 2
+-- Matchparen Performance
+vim.g.matchparen_timeout = 2 -- timeout (ms) for matching parens highlighting
+vim.g.matchparen_insert_timeout = 2 -- timeout in insert mode (prevents lag on large files)
 
--- performance url https://github.com/LazyVim/LazyVim/discussions/326
+-- Statusline
+vim.opt.laststatus = 3 -- global statusline (single bar across all windows)
 
-vim.opt.laststatus = 3
+-- Line Breaking
+vim.opt.linebreak = true -- when wrap is on, break at word boundaries (not mid-word)
+vim.g.markdown_recommended_style = 0 -- disable default markdown indent style
 
-vim.opt.linebreak = true -- wrap lines at convenient points
-vim.g.markdown_recommended_style = 0
-
+-- Icons (used by various plugins for consistent iconography)
 vim.g.icons = {
   misc = {
     dots = '󰇘',
@@ -138,5 +152,5 @@ vim.g.icons = {
   },
 }
 
--- treesitter support for zsh
+-- Treesitter: treat zsh files as bash for syntax highlighting
 vim.treesitter.language.register('bash', 'zsh')
