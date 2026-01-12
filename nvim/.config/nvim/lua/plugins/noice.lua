@@ -1,48 +1,45 @@
-return -- lazy.nvim
-{
+-- Noice: replaces vim's UI for messages, cmdline, and popupmenu
+-- Renders notifications in floating windows, cmdline as popup, search at bottom
+-- Uses treesitter for syntax highlighting in LSP docs and signatures
+return {
   'folke/noice.nvim',
-  event = 'VeryLazy',
+  event = 'VeryLazy', -- load after startup
+  dependencies = {
+    'MunifTanjim/nui.nvim', -- UI component library
+    'rcarriga/nvim-notify', -- notification manager
+  },
   opts = {
-    -- add any options here
+    -- LSP Integration
     lsp = {
-      -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
       override = {
+        -- use treesitter for markdown rendering in LSP popups
         ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
         ['vim.lsp.util.stylize_markdown'] = true,
-        ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
+        ['cmp.entry.get_documentation'] = true,
       },
       signature = {
         enabled = true,
         auto_open = {
           enabled = true,
-          trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
-          luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
-          throttle = 100, -- Debounce lsp signature help request by 50ms
+          trigger = true, -- show on trigger chars (e.g., '(' for functions)
+          luasnip = true, -- show when jumping to snippet nodes
+          throttle = 100, -- debounce (ms)
         },
       },
-      hover = {
-        enabled = true,
-        silent = true,
-      },
+      hover = { enabled = true, silent = true },
     },
-    -- you can enable a preset for easier configuration
+
+    -- Presets: pre-configured UI layouts
     presets = {
-      bottom_search = true, -- use a classic bottom cmdline for search
-      command_palette = true, -- position the cmdline and popupmenu together
-      long_message_to_split = true, -- long messages will be sent to a split
-      inc_rename = false, -- enables an input dialog for inc-rename.nvim
-      lsp_doc_border = true, -- add a border to hover docs and signature help
+      bottom_search = true, -- classic search at bottom
+      command_palette = true, -- cmdline + popupmenu together
+      long_message_to_split = true, -- overflow messages open in split
+      inc_rename = false, -- inc-rename.nvim dialog
+      lsp_doc_border = true, -- borders on hover/signature
     },
-  },
-  dependencies = {
-    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-    'MunifTanjim/nui.nvim',
-    'rcarriga/nvim-notify',
   },
   config = function(_, opts)
-    -- HACK: noice shows messages from before it was enabled,
-    -- but this is not ideal when Lazy is installing plugins,
-    -- so clear the messages in this case.
+    -- clear messages when lazy.nvim is installing (avoids noise)
     if vim.o.filetype == 'lazy' then
       vim.cmd [[messages clear]]
     end
