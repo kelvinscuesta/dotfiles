@@ -1,32 +1,20 @@
+-- Tiny-inline-diagnostic: pretty inline diagnostic messages
+-- Replaces default virtual_text with formatted, wrapped diagnostic display
+-- Shows error/warning messages inline with better readability
 return {
   'rachartier/tiny-inline-diagnostic.nvim',
-  event = 'VeryLazy', -- Or `LspAttach`
-  priority = 1000, -- needs to be loaded in first
+  event = 'VeryLazy',
+  priority = 1000, -- load early
   config = function()
     require('tiny-inline-diagnostic').setup {
       preset = 'classic',
       options = {
-        break_line = {
-          -- Enable the feature to break messages after a specific length
-          enabled = true,
-
-          -- Number of characters after which to break the line
-          after = 30,
-        },
-        throttle = 0,
-        show_source = {
-          enabled = true,
-          if_many = false,
-        },
-        multilines = {
-          -- Enable multiline diagnostic messages
-          enabled = true,
-
-          -- Always show messages on all lines for multiline diagnostics
-          always_show = true,
-        },
+        break_line = { enabled = true, after = 30 }, -- wrap long messages
+        throttle = 0, -- no delay
+        show_source = { enabled = true, if_many = false }, -- show diagnostic source
+        multilines = { enabled = true, always_show = true }, -- show on all affected lines
       },
     }
-    vim.diagnostic.config { virtual_text = false } -- Only if needed in your configuration, if you already have native LSP diagnostics
+    vim.diagnostic.config { virtual_text = false } -- disable default virtual_text
   end,
 }
