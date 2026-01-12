@@ -1,0 +1,58 @@
+[push]
+	default = simple
+	autoSetupRemote = true
+	followTags = true
+[credential]
+	helper = osxkeychain
+[user]
+	name = Kelvin Cuesta
+	email = kelvin.cuesta@gusto.com
+	signingkey = /Users/kelvin.cuesta/.ssh/id_ed25519.pub
+[core]
+	hooksPath = /Users/kelvin.cuesta/.gusto/githooks
+	pager = diff-so-fancy | less --tabs=4 -RF
+[maintenance]
+	repo = /Users/kelvin.cuesta/workspace/zenpayroll
+	repo = /Users/kelvin.cuesta/workspace/web
+[interactive]
+	diffFilter = diff-so-fancy --patch
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	func = 146 bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[merge]
+	conflictStyle = diff3
+[commit]
+	gpgsign = true
+	verbose = true
+[gpg]
+	format = ssh
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+[rerere]
+	enabled = true
+	autoupdate = true
+[rebase]
+	autoSquash = true
+	updateRefs = true
+	autoStash = true
+[pull]
+	rebase = true
