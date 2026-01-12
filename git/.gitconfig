@@ -56,3 +56,38 @@
 	autoStash = true
 [pull]
 	rebase = true
+[alias]
+	# Log (pretty formats)
+	lg = log --oneline --graph --decorate
+	ll = log --oneline -n 15
+	last = log -1 HEAD --stat
+	hist = log --pretty=format:'%C(yellow)%h%Creset %ad | %s%C(auto)%d%Creset %C(dim)<%an>%Creset' --date=short
+
+	# Branch
+	bra = branch -a
+	brv = branch -vv
+	brd = branch -d
+	brD = branch -D
+	gone = "!git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}'"
+
+	# Diff
+	ds = diff --staged
+	dc = diff --cached
+	stat = diff --stat
+
+	# Stash
+	sth = stash
+	sthp = stash pop
+	sthl = stash list
+	sths = stash show -p
+
+	# Reset / Undo
+	unstage = reset HEAD --
+	undo = reset --soft HEAD~1
+	discard = checkout --
+
+	# Misc
+	aliases = config --get-regexp alias
+	root = rev-parse --show-toplevel
+	whoami = "!echo $(git config user.name) '<'$(git config user.email)'>'"
+	branches = for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
