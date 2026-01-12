@@ -1,36 +1,68 @@
-# Dotfiles / Setup
+# Dotfiles
 
-I figured I should get into getting a consistent setup across different laptops. This is my journey.
+Managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-## TODO
+## Quick Start
 
-1. Sync up git config
-2. Add mac customizations across setups https://mac.install.guide/mac-setup/
-3. Add applications to Brewfile
-4. Look into GNU Stow for dotfiles
+```bash
+# Install dependencies
+brew bundle
 
-## Peripherals
+# Clone repo
+git clone <repo-url> ~/dotfiles
+cd ~/dotfiles
 
-Currently using a glove80 split keyboard. Using the TailorKey layout and QWERTY
+# Stow all packages (work machine)
+stow zsh zsh-work nvim git ghostty starship bat kmonad karabiner
 
-## Homebrew
+# Personal machine (skip work config)
+stow zsh nvim git ghostty starship bat kmonad karabiner
+```
 
-TODO: Add mac applications to brew file and try to sync up different brew setups across devices
+## Structure
 
-## Mac Apps
+```
+~/dotfiles/
+├── zsh/           # Core zsh + personal config
+├── zsh-work/      # Gusto-specific config (optional)
+├── nvim/          # Neovim
+├── git/           # Git config
+├── ghostty/       # Ghostty terminal
+├── starship/      # Starship prompt
+├── bat/           # Bat (better cat)
+├── kmonad/        # Kmonad keyboard
+├── karabiner/     # Karabiner-Elements
+└── Brewfile       # Homebrew packages
+```
 
-- Homerow app with opt command and shift as the label maker
-- Karabiner-elements for home row mods on macos keyboard https://havn.blog/2024/03/03/a-good-way.html
+## Packages
 
-## Customizations
-- catpuccin frappe colorscheme
-- gruvbox vim colorscheme
-- go mono nerd font for iterm2
-- iterm2 profile -> keys -> key mappings -> presets -> natural text editing
+| Package | Contents |
+|---------|----------|
+| `zsh` | `.zshrc`, `.zimrc`, `personal.zsh` |
+| `zsh-work` | `work.zsh` (Gusto aliases, AWS, secrets) |
+| `nvim` | Neovim config |
+| `git` | `.gitconfig` |
+| `ghostty` | Ghostty terminal config |
+| `starship` | Starship prompt config |
+| `bat` | Bat config |
+| `kmonad` | Kmonad keyboard config |
+| `karabiner` | Karabiner-Elements config |
 
-## Vim and .vimrc
-- using native vim packages
-- for fzf and buffer workflow
-- install fzf with brew
-- git clone git@github.com:junegunn/fzf.vim.git ~/.vim/pack/fzf/start/fzf.vim
-- git clone the fzf.vim package into vim pack and then activate with setting rtp
+## Adding new configs
+
+```bash
+# Create package structure
+mkdir -p ~/dotfiles/newpkg/.config/newpkg
+
+# Move config
+mv ~/.config/newpkg/* ~/dotfiles/newpkg/.config/newpkg/
+
+# Stow it
+cd ~/dotfiles && stow newpkg
+```
+
+## Notes
+
+- `~/.secrets` not tracked (contains API keys)
+- `~/.gusto/` managed by Gusto's config_files repo
