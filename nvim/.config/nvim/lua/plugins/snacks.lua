@@ -1,19 +1,26 @@
+-- Snacks: collection of QoL plugins by folke (dashboard, picker, explorer, etc.)
+--
+-- Enabled modules: dashboard, explorer, gitbrowse, image, indent, input,
+--                  notifier, picker, scope, statuscolumn, words
+--
+-- Key groups:
+--   <leader><space> smart find   <leader>/ grep         <leader>e explorer
+--   <leader>f* find files        <leader>g* git         <leader>s* search
+--   <leader>u* toggles           gd/gr/gI LSP           <leader>z zen mode
 return {
   'folke/snacks.nvim',
-  priority = 1000,
+  priority = 1000, -- load early
   lazy = false,
   ---@type snacks.Config
   opts = {
-    dashboard = { enabled = true },
-    explorer = { enabled = true },
-    gitbrowse = { enabled = true },
-    image = { enabled = true },
-    indent = { enabled = true, animate = { enabled = false }, chunk = { enabled = true } },
-    input = { enabled = true },
-    notifier = {
-      enabled = true,
-      style = 'fancy',
-    },
+    -- Modules
+    dashboard = { enabled = true }, -- start screen
+    explorer = { enabled = true }, -- file explorer
+    gitbrowse = { enabled = true }, -- open in GitHub
+    image = { enabled = true }, -- image preview
+    indent = { enabled = true, animate = { enabled = false }, chunk = { enabled = true } }, -- indent guides
+    input = { enabled = true }, -- better vim.ui.input
+    notifier = { enabled = true, style = 'fancy' }, -- notification manager
     picker = {
       actions = {
         sidekick_send = function(...)
@@ -45,9 +52,9 @@ return {
         },
       },
     },
-    scope = { enabled = true },
-    statuscolumn = { enabled = true },
-    words = { enabled = true },
+    scope = { enabled = true }, -- scope-aware text objects
+    statuscolumn = { enabled = true }, -- custom status column
+    words = { enabled = true }, -- highlight and jump to word references
   },
   keys = {
     -- Top Pickers & Explorer
