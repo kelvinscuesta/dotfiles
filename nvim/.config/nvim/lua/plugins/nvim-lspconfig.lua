@@ -229,13 +229,15 @@ return {
       -- Ruby: Sorbet (type checker)
       sorbet = {
         cmd = {
-          'bundle', 'exec', 'srb', 'tc', '--lsp',
+          'bundle',
+          'exec',
+          'srb',
+          'tc',
+          '--lsp',
           '--enable-all-experimental-lsp-features', -- completion, go-to-def, find refs
         },
         filetypes = { 'ruby' },
         capabilities = capabilities,
-        -- root_dir: sorbet needs sorbet/ dir to work
-        root_markers = { 'sorbet/config', 'Gemfile' },
       },
 
       -- Ruby: Rubocop (linter/formatter)
