@@ -38,6 +38,7 @@ return {
     -- stop_after_first: try prettierd, fall back to prettier if unavailable
     formatters_by_ft = {
       lua = { 'stylua' },
+      python = { 'ruff_organize_imports', 'ruff_format' }, -- sort imports, then format
       javascript = { 'prettierd', 'prettier', stop_after_first = true },
       typescript = { 'prettierd', 'prettier', stop_after_first = true },
       javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },

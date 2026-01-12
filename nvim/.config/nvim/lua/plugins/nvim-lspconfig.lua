@@ -252,7 +252,39 @@ return {
       },
 
       -- Python: Ruff (fast linter/formatter)
-      ruff = { settings = {} },
+      ruff = {
+        init_options = {
+          settings = {
+            lineLength = 88, -- black default (use 120 for more space)
+            lint = {
+              enable = true,
+              -- Rules: https://docs.astral.sh/ruff/rules/
+              select = {
+                'E', -- pycodestyle errors
+                'W', -- pycodestyle warnings
+                'F', -- pyflakes
+                'I', -- isort (import sorting)
+                'B', -- flake8-bugbear
+                'C4', -- flake8-comprehensions
+                'UP', -- pyupgrade
+                'SIM', -- flake8-simplify
+                'TCH', -- type-checking imports
+                'RUF', -- ruff-specific rules
+              },
+              ignore = {
+                'E501', -- line too long (formatter handles this)
+              },
+            },
+            format = {
+              preview = true, -- enable preview style formatting
+            },
+            organizeImports = true,
+          },
+        },
+        on_attach = function(client)
+          client.server_capabilities.hoverProvider = false -- basedpyright handles hover
+        end,
+      },
 
       -- Lua
       lua_ls = {
