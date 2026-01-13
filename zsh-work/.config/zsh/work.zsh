@@ -19,3 +19,7 @@ alias web='cd ~/workspace/web'
 alias fe="yarn nx dev gusto"
 alias runpretty='prettier --write $(git diff --cached --name-only --diff-filter=ACMR | grep -E "\.(js|jsx|ts|tsx|json|css|scss|md|yaml|yml|graphql)$")'
 alias yarntest="yarn test --runTestsByPath"
+
+
+# claude code
+export ENABLE_LSP_TOOLS=1
