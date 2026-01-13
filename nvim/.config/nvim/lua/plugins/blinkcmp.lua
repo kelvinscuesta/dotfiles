@@ -1,10 +1,9 @@
 -- Blink.cmp: fast completion engine written in Rust
--- Provides autocomplete suggestions as you type from LSP, snippets, buffer, etc.
+-- Provides autocomplete suggestions as you type from LSP, buffer, path
 -- Keymaps: C-y accept, C-n/C-p navigate, C-space open menu, C-e hide, C-k signature
 return {
   'saghen/blink.cmp',
   dependencies = {
-    'rafamadriz/friendly-snippets', -- collection of common snippets
     'xzbdmw/colorful-menu.nvim', -- syntax-highlighted completion menu
   },
   version = '*', -- use latest release (pre-built binaries)
@@ -15,11 +14,8 @@ return {
     -- Keymaps: 'default' uses C-y to accept (like vim's built-in completion)
     keymap = { preset = 'default' },
 
-    -- Signature Help: show function signatures while typing arguments
-    signature = {
-      enabled = true,
-      window = { treesitter_highlighting = true, show_documentation = true },
-    },
+    -- Signature Help: disabled, noice.nvim handles this
+    signature = { enabled = false },
 
     -- Appearance
     appearance = {
@@ -55,14 +51,13 @@ return {
 
     -- Completion Sources (in priority order)
     sources = {
-      default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+      default = { 'lazydev', 'lsp', 'path', 'buffer' },
       providers = {
         lazydev = {
           name = 'LazyDev',
           module = 'lazydev.integrations.blink',
           score_offset = 100, -- prioritize neovim API completions
         },
-        snippets = { opts = { friendly_snippets = false } },
       },
     },
 
