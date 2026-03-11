@@ -9,13 +9,12 @@
 	email = kelvin.cuesta@gusto.com
 	signingkey = /Users/kelvin.cuesta/.ssh/id_ed25519.pub
 [core]
-	hooksPath = /Users/kelvin.cuesta/.gusto/githooks
-	pager = diff-so-fancy | less --tabs=4 -RF
+	pager = delta
 [maintenance]
 	repo = /Users/kelvin.cuesta/workspace/zenpayroll
 	repo = /Users/kelvin.cuesta/workspace/web
 [interactive]
-	diffFilter = diff-so-fancy --patch
+	diffFilter = delta --color-only
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -32,7 +31,7 @@
 	new = green bold
 	whitespace = red reverse
 [merge]
-	conflictStyle = zdiff3
+	conflictstyle = zdiff3
 [commit]
 	gpgsign = true
 	verbose = true
@@ -91,3 +90,23 @@
 	root = rev-parse --show-toplevel
 	whoami = "!echo $(git config user.name) '<'$(git config user.email)'>'"
 	branches = for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+	dft = \\!GIT_EXTERNAL_DIFF=difft git diff
+	dfl = \\!GIT_EXTERNAL_DIFF=difft git log -p --ext-diff
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[delta]
+	navigate = true
+	side-by-side = true
+	syntax-theme = gruvbox-dark
+	minus-style = syntax "#3c1f1e"
+	minus-emph-style = syntax "#72302a"
+	plus-style = syntax "#1d2a1d"
+	plus-emph-style = syntax "#2e4430"
+	line-numbers-minus-style = "#ea6962" bold
+	line-numbers-plus-style = "#a9b665" bold
+	line-numbers-zero-style = "#7c6f64"
+	hunk-header-style = syntax bold
+	hunk-header-decoration-style = "#d8a657" ul ol
