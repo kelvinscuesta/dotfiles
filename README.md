@@ -13,10 +13,10 @@ git clone <repo-url> ~/dotfiles
 cd ~/dotfiles
 
 # Stow all packages (work machine)
-stow zsh zsh-work nvim git ghostty starship bat kmonad karabiner
+stow zsh zsh-work claude claude-work nvim git ghostty starship bat kmonad karabiner
 
 # Personal machine (skip work config)
-stow zsh nvim git ghostty starship bat kmonad karabiner
+stow zsh claude nvim git ghostty starship bat kmonad karabiner
 ```
 
 ## Structure
@@ -25,6 +25,8 @@ stow zsh nvim git ghostty starship bat kmonad karabiner
 ~/dotfiles/
 ├── zsh/           # Core zsh + personal config
 ├── zsh-work/      # Gusto-specific config (optional)
+├── claude/        # Claude Code personal config (CLAUDE.md, skills, hooks)
+├── claude-work/   # Claude Code work config (settings.json, work skills)
 ├── nvim/          # Neovim
 ├── git/           # Git config
 ├── ghostty/       # Ghostty terminal
@@ -41,6 +43,8 @@ stow zsh nvim git ghostty starship bat kmonad karabiner
 |---------|----------|
 | `zsh` | `.zshrc`, `.zimrc`, `personal.zsh` |
 | `zsh-work` | `work.zsh` (Gusto aliases, AWS, secrets) |
+| `claude` | `CLAUDE.md`, statusline, skills, hooks |
+| `claude-work` | `settings.json` (Bedrock, plugins), work skills |
 | `nvim` | Neovim config |
 | `git` | `.gitconfig` |
 | `ghostty` | Ghostty terminal config |

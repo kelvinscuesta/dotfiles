@@ -1,0 +1,90 @@
+{
+  "awsAuthRefresh": "aws sso login --profile $AWS_PROFILE",
+  "env": {
+    "AWS_PROFILE": "bedrock-users",
+    "AWS_REGION": "us-west-2",
+    "CLAUDE_CODE_USE_BEDROCK": "true",
+    "ANTHROPIC_MODEL": "us.anthropic.claude-opus-4-6-v1",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "us.anthropic.claude-opus-4-6-v1",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "10240",
+    "MAX_THINKING_TOKENS": "20480",
+    "GUSTO_CLAUDE_SETUP": "true"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git stash:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(yarn install)",
+      "Bash(yarn test:*)",
+      "Bash(git add:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(ls:*)",
+      "Read(~/.claude/**)",
+      "Glob(~/.claude/**)",
+      "Read(~/workspace/**)",
+      "Glob(~/workspace/**)",
+      "mcp__slackgusto__list_users",
+      "mcp__slackgusto__search_messages",
+      "mcp__slackgusto__get_channel_history"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "plan"
+  },
+  "model": "us.anthropic.claude-opus-4-6-v1",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/check-follow-ups.sh"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/collect-pr-follow-ups.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true,
+    "basedpyright@claude-code-lsps": true,
+    "ruby-lsp@claude-code-lsps": true,
+    "vtsls@claude-code-lsps": true,
+    "gopls@claude-code-lsps": false,
+    "gusto-setup-wizard@gusto-claude-code": false,
+    "team-payroll-prep@gusto-claude-code": false,
+    "gusto-essentials@gusto-claude-code": true,
+    "gusto-dev@gusto-claude-code": true,
+    "gusto-frontend@gusto-claude-code": true,
+    "gusto-backend@gusto-claude-code": true,
+    "gusto-product@gusto-claude-code": true,
+    "claude-session-driver@superpowers-marketplace": false,
+    "explanatory-output-style@claude-code-plugins": true,
+    "code-simplifier@claude-plugins-official": false,
+    "github@claude-plugins-official": false,
+    "playwright@claude-plugins-official": false,
+    "atlassian@claude-plugins-official": false,
+    "slack@claude-plugins-official": false
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "medium"
+}
