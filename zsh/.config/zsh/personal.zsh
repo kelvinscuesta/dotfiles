@@ -31,6 +31,14 @@ alias gpom='git pull origin main'
 alias lg='lazygit'
 alias root='cd $(git rev-parse --show-toplevel)'
 
+# Aliases - claude
+alias cdc='cd ~/.claude'
+alias cdcp='cd ~/.claude/plans'
+alias cdcr='cd ~/.claude/research'
+
+# Aliases - shell
+alias reload='exec zsh'
+
 # Aliases - tools
 alias lzd='lazydocker'
 alias runkmonad='sudo ~/kmonadbin ~/.kmonad.kbd'
