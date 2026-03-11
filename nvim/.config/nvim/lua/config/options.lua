@@ -67,6 +67,11 @@ vim.opt.foldenable = false -- start with all folds open
 
 -- Spell Check
 vim.opt.spell = false -- disable spell checking by default
+vim.opt.spellcapcheck = '' -- disable capitalization warnings
+vim.opt.spellfile = {
+  vim.fn.stdpath('config') .. '/spell/en.utf-8.add', -- 1zg: personal
+  vim.fn.stdpath('config') .. '/spell/en.work.utf-8.add', -- 2zg: work
+}
 
 -- LSP Logging (enable for debugging, impacts performance)
 --vim.lsp.set_log_level 'on'
