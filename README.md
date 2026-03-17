@@ -2,21 +2,25 @@
 
 Managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-## Quick Start
+## Bootstrap a New Mac
 
 ```bash
-# Install dependencies
+# 1. Install Homebrew (if needed)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 2. Clone and install
+git clone git@github.com:kelvinscuesta/dotfiles.git ~/dotfiles
+cd ~/dotfiles
 brew bundle
 
-# Clone repo
-git clone <repo-url> ~/dotfiles
-cd ~/dotfiles
-
-# Stow all packages (work machine)
+# 3. Stow packages
+# Work machine:
 stow zsh zsh-work claude claude-work nvim git ghostty starship bat kmonad karabiner
-
-# Personal machine (skip work config)
+# Personal machine (skip work config):
 stow zsh claude nvim git ghostty starship bat kmonad karabiner
+
+# 4. Post-stow setup
+./bootstrap.sh
 ```
 
 ## Structure
@@ -32,9 +36,10 @@ stow zsh claude nvim git ghostty starship bat kmonad karabiner
 ├── ghostty/       # Ghostty terminal
 ├── starship/      # Starship prompt
 ├── bat/           # Bat (better cat)
-├── kmonad/        # Kmonad keyboard
+├── kmonad/        # Kmonad keyboard remapping (see kmonad/README.md)
 ├── karabiner/     # Karabiner-Elements
-└── Brewfile       # Homebrew packages
+├── Brewfile       # Homebrew packages
+└── bootstrap.sh   # Post-stow setup (bat themes, kmonad daemon, zim)
 ```
 
 ## Packages
@@ -45,24 +50,19 @@ stow zsh claude nvim git ghostty starship bat kmonad karabiner
 | `zsh-work` | `work.zsh` (Gusto aliases, AWS, secrets) |
 | `claude` | `CLAUDE.md`, statusline, skills, hooks |
 | `claude-work` | `settings.json` (Bedrock, plugins), work skills |
-| `nvim` | Neovim config |
-| `git` | `.gitconfig` |
-| `ghostty` | Ghostty terminal config |
+| `nvim` | Neovim config (Lazy plugin manager, 20+ plugins) |
+| `git` | `.gitconfig` (delta pager, GPG signing, aliases) |
+| `ghostty` | Ghostty terminal + gruvbox-material themes |
 | `starship` | Starship prompt config |
-| `bat` | Bat config |
-| `kmonad` | Kmonad keyboard config |
+| `bat` | Bat config + Catppuccin themes |
+| `kmonad` | Homerow mods config + LaunchDaemon plist |
 | `karabiner` | Karabiner-Elements config |
 
 ## Adding new configs
 
 ```bash
-# Create package structure
 mkdir -p ~/dotfiles/newpkg/.config/newpkg
-
-# Move config
 mv ~/.config/newpkg/* ~/dotfiles/newpkg/.config/newpkg/
-
-# Stow it
 cd ~/dotfiles && stow newpkg
 ```
 
@@ -70,3 +70,4 @@ cd ~/dotfiles && stow newpkg
 
 - `~/.secrets` not tracked (contains API keys)
 - `~/.gusto/` managed by Gusto's config_files repo
+- kmonad requires extra setup — see `kmonad/README.md`
