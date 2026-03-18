@@ -6,8 +6,8 @@
 	helper = osxkeychain
 [user]
 	name = Kelvin Cuesta
-	email = kelvin.cuesta@gusto.com
-	signingkey = /Users/kelvin.cuesta/.ssh/id_ed25519.pub
+	email = kelvinscuesta@gmail.com
+	signingkey = /Users/Kelvin/.ssh/id_ed25519.pub
 [core]
 	pager = delta
 [maintenance]

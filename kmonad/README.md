@@ -44,9 +44,7 @@ After install, go to **System Settings → Privacy & Security → Input Monitori
 # Option B: Build from source with stack
 git clone https://github.com/kmonad/kmonad.git ~/kmonad
 cd ~/kmonad
-stack build
-cp "$(stack path --local-install-root)/bin/kmonad" ~/kmonadbin
-chmod +x ~/kmonadbin
+stack build --copy-bins  # installs to ~/.local/bin/kmonad
 ```
 
 ### 3. Stow the config
@@ -63,6 +61,7 @@ The plist runs kmonad as root at boot (required for input capture on macOS).
 ```bash
 # Edit the plist to replace YOUR_USERNAME with your actual username
 sed "s/YOUR_USERNAME/$(whoami)/g" ~/dotfiles/kmonad/local.kmonad.plist \
+
   | sudo tee /Library/LaunchDaemons/local.kmonad.plist > /dev/null
 
 # Load the daemon
@@ -85,7 +84,7 @@ cat /tmp/kmonad.stderr
 
 # Test manually (stop daemon first)
 sudo launchctl bootout system/local.kmonad
-sudo ~/kmonadbin ~/.kmonad.kbd
+sudo ~/.local/bin/kmonad ~/.kmonad.kbd
 ```
 
 ## Managing the Daemon

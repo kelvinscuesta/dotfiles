@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>local.kanata-notifier</string>
+    <key>Program</key>
+    <string>/Users/YOUR_USERNAME/.local/bin/kanata-notifier</string>
+    <key>RunAtLoad</key>
+    <true />
+    <key>KeepAlive</key>
+    <true />
+    <key>StandardOutPath</key>
+    <string>/tmp/kanata-notifier.stdout</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/kanata-notifier.stderr</string>
+  </dict>
+</plist>

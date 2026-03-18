@@ -33,3 +33,4 @@ brew "watchexec"
 
 # Casks
 cask "ghostty"
+cask "karabiner-elements"

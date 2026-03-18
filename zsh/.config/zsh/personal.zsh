@@ -72,7 +72,7 @@ eval "$(starship init zsh)"
 [ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
 
 # Local bin
-. "$HOME/.local/bin/env"
+export PATH="$HOME/.local/bin:$PATH"
 
 # Mise (version manager)
 eval "$(mise activate zsh)"

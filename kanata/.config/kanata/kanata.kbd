@@ -1,0 +1,64 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft up
+  fn   lctl lalt lmet           spc            rmet ralt left down rght
+)
+
+(defalias
+  hyp   (multi lctl lalt lmet lsft)
+  ctl_a (tap-hold-release 150 150 a lctl)
+  alt_s (tap-hold-release 150 150 s lalt)
+  met_d (tap-hold-release 150 150 d lmet)
+  sft_f (tap-hold-release 150 150 f lsft)
+  sft_j (tap-hold-release 150 150 j rsft)
+  met_k (tap-hold-release 150 150 k rmet)
+  alt_l (tap-hold-release 150 150 l lalt)
+  ctl_; (tap-hold-release 150 150 ; rctl)
+  fn    (layer-while-held function)
+  fn-gm (layer-while-held fn-gaming)
+  togame (layer-switch gaming)
+  todef  (layer-switch default)
+)
+
+(deflayer default
+  _    brdn brup _    _    bldn blup prev pp   next mute vold volu
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  @hyp @ctl_a @alt_s @met_d @sft_f g    h    @sft_j @met_k @alt_l @ctl_; _ _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  @fn  _    _    _              _              _    _    _    _    _
+)
+
+(deflayer function
+  @togame f1 f2 f3 f4  f5   f6   f7   f8   f9   f10  f11  f12
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer gaming
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  @fn-gm _ _   _              _              _    _    _    _    _
+)
+
+(deflayer fn-gaming
+  @todef _ _   _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _              _              _    _    _    _    _
+)
