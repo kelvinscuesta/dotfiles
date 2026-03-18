@@ -12,7 +12,7 @@
 )
 
 (defalias
-  hyp   (multi lctl lalt lmet lsft)
+  hyp   (multi lsft lctl lalt lmet)
   ctl_a (tap-hold-release 150 150 a lctl)
   alt_s (tap-hold-release 150 150 s lalt)
   met_d (tap-hold-release 150 150 d lmet)
