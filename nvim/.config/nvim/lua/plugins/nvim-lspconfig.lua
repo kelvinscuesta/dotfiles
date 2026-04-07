@@ -226,7 +226,7 @@ return {
         },
       },
 
-      -- Ruby: Sorbet (type checker)
+      -- Ruby: Sorbet (type checker) — only in projects with sorbet/config
       sorbet = {
         cmd = {
           'bundle',
@@ -234,19 +234,21 @@ return {
           'srb',
           'tc',
           '--lsp',
-          '--enable-all-experimental-lsp-features', -- completion, go-to-def, find refs
+          '--enable-all-experimental-lsp-features',
         },
         filetypes = { 'ruby' },
+        root_markers = { 'sorbet/config' },
         capabilities = capabilities,
       },
 
-      -- Ruby: Rubocop (linter/formatter)
+      -- Ruby: Rubocop (linter/formatter) — only in projects with .rubocop.yml
       rubocop = {
         cmd = { 'bundle', 'exec', 'rubocop', '--lsp' },
         filetypes = { 'ruby' },
+        root_markers = { '.rubocop.yml' },
         capabilities = capabilities,
         init_options = {
-          safeAutocorrect = true, -- only apply safe corrections (no unsafe cops)
+          safeAutocorrect = true,
         },
         on_attach = function(client)
           client.server_capabilities.hoverProvider = false -- sorbet handles hover
