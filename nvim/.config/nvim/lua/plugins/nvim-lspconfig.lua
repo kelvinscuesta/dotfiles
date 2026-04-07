@@ -323,21 +323,34 @@ return {
       },
     }
 
+    -- Servers managed via bundle exec (not Mason-installable)
+    local bundle_servers = { 'sorbet', 'rubocop' }
+
     -- Mason: auto-install servers and tools (run :Mason to manage)
-    local ensure_installed = vim.tbl_keys(servers or {})
+    local ensure_installed = vim.tbl_filter(function(name)
+      return not vim.tbl_contains(bundle_servers, name)
+    end, vim.tbl_keys(servers or {}))
     vim.list_extend(ensure_installed, { 'stylua' }) -- add non-LSP tools
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
     -- Mason-lspconfig: auto-enable installed LSPs
+    -- Don't auto-install/enable Ruby servers — they run via bundle exec
     require('mason-lspconfig').setup {
-      automatic_enable = true,
-      automatic_installation = true,
-      ensure_installed = {}, -- mason-tool-installer handles this
+      automatic_enable = {
+        exclude = { 'ruby_lsp', 'sorbet', 'rubocop' },
+      },
+      automatic_installation = {
+        exclude = { 'ruby_lsp', 'sorbet', 'rubocop' },
+      },
+      ensure_installed = {},
     }
 
     -- Apply server configs from the servers table
     for server_name, config in pairs(servers) do
       vim.lsp.config(server_name, config)
     end
+
+    -- Manually enable bundle-managed servers (Mason can't install these)
+    vim.lsp.enable(bundle_servers)
   end,
 }
