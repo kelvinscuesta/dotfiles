@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tmux Keybind Guide</title>
+<style>
+  :root {
+    --bg0: #282828;
+    --bg1: #32302f;
+    --bg2: #504945;
+    --fg0: #d4be98;
+    --fg1: #ddc7a1;
+    --green: #a9b665;
+    --yellow: #d8a657;
+    --orange: #e78a4e;
+    --red: #ea6962;
+    --aqua: #89b482;
+    --blue: #7daea3;
+    --purple: #d3869b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg0);
+    color: var(--fg0);
+    font-family: 'GoMono Nerd Font', 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  h1 {
+    color: var(--yellow);
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.5px;
+  }
+  h1 span { color: var(--fg0); font-weight: normal; font-size: 0.9rem; }
+  h2 {
+    color: var(--green);
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--bg2);
+  }
+  h3 {
+    color: var(--aqua);
+    font-size: 0.95rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  p { margin-bottom: 0.75rem; color: var(--fg1); }
+  .subtitle { color: var(--bg2); margin-bottom: 2rem; font-size: 0.85rem; }
+
+  /* Concepts diagram */
+  .concepts {
+    background: var(--bg1);
+    border: 1px solid var(--bg2);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    overflow-x: auto;
+  }
+  .concepts pre { color: var(--fg0); }
+  .concepts .session { color: var(--yellow); }
+  .concepts .window { color: var(--green); }
+  .concepts .pane { color: var(--aqua); }
+  .concepts .label { color: var(--bg2); }
+
+  /* Keybind tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+  th {
+    text-align: left;
+    color: var(--bg2);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.3rem 0.75rem;
+  }
+  td {
+    padding: 0.4rem 0.75rem;
+    border-top: 1px solid #3a3634;
+  }
+  tr:hover td { background: var(--bg1); }
+  .key {
+    display: inline-block;
+    background: var(--bg1);
+    border: 1px solid var(--bg2);
+    border-radius: 4px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.85rem;
+    color: var(--yellow);
+    white-space: nowrap;
+  }
+  .key-plain {
+    color: var(--orange);
+    font-weight: bold;
+  }
+  td:last-child { color: var(--fg1); font-size: 0.9rem; }
+
+  /* Prefix badge */
+  .prefix {
+    display: inline-block;
+    background: var(--bg2);
+    color: var(--yellow);
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 0.25rem;
+  }
+
+  /* Tip boxes */
+  .tip {
+    background: var(--bg1);
+    border-left: 3px solid var(--aqua);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+  }
+  .tip strong { color: var(--aqua); }
+
+  /* Definition list for concepts */
+  .def { margin: 0.75rem 0; }
+  .def dt {
+    color: var(--yellow);
+    font-weight: bold;
+    font-size: 0.95rem;
+  }
+  .def dd {
+    color: var(--fg1);
+    margin-left: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--bg2);
+    color: var(--bg2);
+    font-size: 0.75rem;
+  }
+  .footer a { color: var(--blue); text-decoration: none; }
+
+  /* No-prefix indicator */
+  .no-prefix {
+    display: inline-block;
+    background: #3b3428;
+    color: var(--orange);
+    font-size: 0.65rem;
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 0.25rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>tmux <span>keybind guide</span></h1>
+<p class="subtitle">Prefix: <span class="key">C-a</span> &mdash; hold <code>a</code> (Ctrl via homerow mods) + tap <code>a</code></p>
+
+<!-- ─── Concepts ─── -->
+<h2>Concepts</h2>
+
+<div class="concepts"><pre><span class="session">Session: "work"</span>                     <span class="session">Session: "personal"</span>
+<span class="label">├──</span> <span class="window">Window 1: "editor"</span>              <span class="label">├──</span> <span class="window">Window 1: "dotfiles"</span>
+<span class="label">│   ├──</span> <span class="pane">Pane (nvim)</span>                 <span class="label">│   └──</span> <span class="pane">Pane (nvim)</span>
+<span class="label">│   └──</span> <span class="pane">Pane (terminal)</span>             <span class="label">└──</span> <span class="window">Window 2: "notes"</span>
+<span class="label">├──</span> <span class="window">Window 2: "server"</span>                  <span class="label">└──</span> <span class="pane">Pane (terminal)</span>
+<span class="label">│   └──</span> <span class="pane">Pane (rails server)</span>
+<span class="label">└──</span> <span class="window">Window 3: "claude"</span>
+    <span class="label">└──</span> <span class="pane">Pane (claude code)</span></pre></div>
+
+<dl class="def">
+  <dt>Pane</dt>
+  <dd>A split within a single screen. Like nvim splits. Multiple panes visible at once side by side or stacked.</dd>
+  <dt>Window</dt>
+  <dd>A full-screen tab containing one or more panes. Like browser tabs. Only one window visible at a time. Names shown in the status bar.</dd>
+  <dt>Session</dt>
+  <dd>A complete workspace containing multiple windows. Survives disconnection &mdash; detach with <span class="key">C-a d</span>, reconnect with <code>tmux attach</code>.</dd>
+</dl>
+
+<div class="tip">
+  <strong>Typical workflow:</strong> One session per project. Multiple windows per concern (editor, server, tests). Panes for side-by-side within a window.
+</div>
+
+<!-- ─── Navigation ─── -->
+<h2>Navigation</h2>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr>
+    <td><span class="no-prefix">no prefix</span> <span class="key">C-h</span> <span class="key">C-j</span> <span class="key">C-k</span> <span class="key">C-l</span></td>
+    <td>Move between panes (seamless with nvim splits)</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">1</span> &ndash; <span class="key">9</span></td>
+    <td>Jump to window by number</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">n</span></td>
+    <td>Next window</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">p</span></td>
+    <td>Previous window</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">s</span></td>
+    <td>List &amp; switch sessions</td>
+  </tr>
+</table>
+
+<!-- ─── Panes ─── -->
+<h2>Panes</h2>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">\</span></td>
+    <td>Split horizontal (side by side)</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">-</span></td>
+    <td>Split vertical (top / bottom)</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">x</span></td>
+    <td>Close pane</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">z</span></td>
+    <td>Zoom / unzoom pane (fullscreen toggle)</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">{</span></td>
+    <td>Swap pane up</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">}</span></td>
+    <td>Swap pane down</td>
+  </tr>
+</table>
+
+<!-- ─── Windows ─── -->
+<h2>Windows</h2>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">c</span></td>
+    <td>New window</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">,</span></td>
+    <td>Rename window</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">X</span></td>
+    <td>Close window</td>
+  </tr>
+</table>
+
+<!-- ─── Sessions ─── -->
+<h2>Sessions</h2>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">d</span></td>
+    <td>Detach (session keeps running)</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">s</span></td>
+    <td>List sessions &amp; switch</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">$</span></td>
+    <td>Rename session</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">C-s</span></td>
+    <td>Save session (resurrect)</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">C-r</span></td>
+    <td>Restore session (resurrect)</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>From terminal:</strong> <code>tmux new -s name</code> to create, <code>tmux attach -t name</code> to reconnect, <code>tmux ls</code> to list.
+</div>
+
+<!-- ─── Copy Mode ─── -->
+<h2>Copy Mode</h2>
+<p>Enter with <span class="prefix">prefix</span> <span class="key">[</span> &mdash; or scroll with mouse wheel.</p>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr>
+    <td><span class="key">v</span></td>
+    <td>Begin selection</td>
+  </tr>
+  <tr>
+    <td><span class="key">y</span></td>
+    <td>Yank to clipboard</td>
+  </tr>
+  <tr>
+    <td><span class="key">C-v</span></td>
+    <td>Rectangle (block) select</td>
+  </tr>
+  <tr>
+    <td><span class="key">/</span></td>
+    <td>Search forward</td>
+  </tr>
+  <tr>
+    <td><span class="key">?</span></td>
+    <td>Search backward</td>
+  </tr>
+  <tr>
+    <td><span class="key">n</span> / <span class="key">N</span></td>
+    <td>Next / previous match</td>
+  </tr>
+  <tr>
+    <td><span class="key">q</span> or <span class="key">Esc</span></td>
+    <td>Exit copy mode</td>
+  </tr>
+</table>
+
+<!-- ─── Help ─── -->
+<h2>Help</h2>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">/</span></td>
+    <td>Open command palette (interactive help menu)</td>
+  </tr>
+</table>
+
+<!-- ─── Homerow Mods ─── -->
+<h2>Homerow Mod Notes</h2>
+<p>All keybinds designed for homerow mods (Glove80 &amp; MacBook + kmonad):</p>
+<table>
+  <tr><th>Finger</th><th>Tap</th><th>Hold</th></tr>
+  <tr><td>Left pinky</td><td><span class="key-plain">a</span></td><td>Ctrl</td></tr>
+  <tr><td>Left ring</td><td><span class="key-plain">s</span></td><td>Alt</td></tr>
+  <tr><td>Left middle</td><td><span class="key-plain">d</span></td><td>Cmd</td></tr>
+  <tr><td>Left index</td><td><span class="key-plain">f</span></td><td>Shift</td></tr>
+  <tr><td>Right index</td><td><span class="key-plain">j</span></td><td>Shift</td></tr>
+  <tr><td>Right middle</td><td><span class="key-plain">k</span></td><td>Cmd</td></tr>
+  <tr><td>Right ring</td><td><span class="key-plain">l</span></td><td>Alt</td></tr>
+  <tr><td>Right pinky</td><td><span class="key-plain">;</span></td><td>Ctrl</td></tr>
+</table>
+
+<div class="tip">
+  <strong>C-a prefix:</strong> Hold <code>a</code> (becomes Ctrl at 150ms) then tap <code>a</code> again. Same finger twice but quick.<br>
+  <strong>C-h/j/k/l nav:</strong> Hold <code>a</code> (Ctrl, left) + tap <code>h/j/k/l</code> (right hand). Bilateral, no conflict.
+</div>
+
+<div class="footer">
+  Config: <code>~/.config/tmux/tmux.conf</code> &nbsp;|&nbsp;
+  Reload: <code>tmux source ~/.config/tmux/tmux.conf</code> &nbsp;|&nbsp;
+  <a href="https://github.com/kelvinscuesta/dotfiles">dotfiles</a>
+</div>
+
+</body>
+</html>
