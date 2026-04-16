@@ -1,6 +1,7 @@
 tap "homebrew/bundle"
 
 # Core
+brew "tmux"
 brew "stow"
 brew "zsh"
 brew "curl"

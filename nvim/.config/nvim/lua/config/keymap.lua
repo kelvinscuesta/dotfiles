@@ -9,11 +9,8 @@ vim.keymap.set('n', 'Q', '<nop>') -- disable Ex mode (easy to hit accidentally)
 vim.keymap.set('n', '<C-d>', '<C-d>zz') -- half-page down + center
 vim.keymap.set('n', '<C-u>', '<C-u>zz') -- half-page up + center
 
--- Window Navigation: Ctrl+hjkl to move between splits
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Focus left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Focus right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
+-- Window Navigation: C-h/j/k/l handled by vim-tmux-navigator plugin
+-- (seamless navigation between nvim splits and tmux panes)
 
 -- Terminal: Esc exits terminal mode (default is <C-\><C-n>)
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
