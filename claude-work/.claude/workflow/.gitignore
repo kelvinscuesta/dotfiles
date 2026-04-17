@@ -1,0 +1,10 @@
+.env
+audit.log
+audit-history/
+queue.json
+status.html
+slack_queue.jsonl
+plans/
+drafts/
+research/
+pending/

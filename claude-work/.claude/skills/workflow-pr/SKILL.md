@@ -39,12 +39,12 @@ Format: kebab-case
 ## PR Template Discovery
 
 ### Check for Repo Template FIRST
-```bash
+`YOUR_SLACK_CHANNEL_ID``bash
 cat .github/PULL_REQUEST_TEMPLATE.md 2>/dev/null || \
 cat .github/pull_request_template.md 2>/dev/null || \
 cat docs/PULL_REQUEST_TEMPLATE.md 2>/dev/null || \
 cat PULL_REQUEST_TEMPLATE.md 2>/dev/null
-```
+`YOUR_SLACK_CHANNEL_ID``
 
 ### If Template Found
 - Parse the template structure (headings, sections)
@@ -57,7 +57,7 @@ Use default template below.
 
 ## Default PR Description Template
 
-```
+`YOUR_SLACK_CHANNEL_ID``
 ## What is this change doing?
 <Describe what PR accomplishes>
 <For organized commits, list by commit with title and SHA>
@@ -78,7 +78,7 @@ Use default template below.
 <ALWAYS include fun gif from giphy.com>
 
 🤖 *Generated with [Claude Code](https://claude.com/claude-code)*
-```
+`YOUR_SLACK_CHANNEL_ID``
 
 ### Styling
 - **Backticks** for code: function names, hooks, variables, flags, extensions
@@ -91,7 +91,7 @@ Use default template below.
 Ask user: "Include AI workflow attribution block? (yes/no)"
 
 If YES, prepend at TOP of description:
-```
+`YOUR_SLACK_CHANNEL_ID``
 > [!IMPORTANT]
 > **Built entirely by `gusto-dev-workflow-orchestrator` agent** - autonomous AI workflow from ticket to PR
 >
@@ -115,7 +115,7 @@ If YES, prepend at TOP of description:
 > - Leverage: Engineers can supervise multiple autonomous workflows in parallel
 >
 > The human engineer provides the ticket/task, approves at checkpoints, and the orchestrator handles everything else.
-```
+`YOUR_SLACK_CHANNEL_ID``
 
 ## Workflow Execution Summary (Optional)
 
@@ -123,7 +123,7 @@ Ask user: "Include workflow execution summary? (yes/no)"
 
 If YES, insert AFTER attribution block (or at top if no attribution):
 
-```
+`YOUR_SLACK_CHANNEL_ID``
 ---
 
 ## Workflow Execution Summary
@@ -147,7 +147,7 @@ If YES, insert AFTER attribution block (or at top if no attribution):
 5. **End-to-end delivery** - Single request → PR ready for merge
 
 ---
-```
+`YOUR_SLACK_CHANNEL_ID``
 
 Customize:
 - Remove phases not executed

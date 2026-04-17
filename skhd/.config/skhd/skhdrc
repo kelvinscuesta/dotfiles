@@ -1,0 +1,9 @@
+# skhd — system-wide keyboard shortcuts
+# Uses Ctrl+Option prefix (safe from Homerow.app's Hyper bindings).
+# Wraps commands with `sh -c` so $HOME expands (skhd doesn't expand env itself).
+
+# 🔧 Workflow server
+ctrl + alt - w : sh -c '$HOME/.claude/workflow-server/scripts/shortcut-dashboard.sh'
+ctrl + alt - s : sh -c '$HOME/.claude/workflow-server/scripts/shortcut-toggle.sh'
+ctrl + alt - l : sh -c '$HOME/.claude/workflow-server/scripts/shortcut-logs.sh'
+ctrl + alt - 0x2F : sh -c '$HOME/.claude/workflow-server/scripts/shortcut-status.sh'

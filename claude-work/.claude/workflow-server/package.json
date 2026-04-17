@@ -1,0 +1,18 @@
+{
+  "name": "workflow-server",
+  "module": "src/server.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun run src/server.ts",
+    "dev": "IGNORE_WORK_HOURS=1 JIRA_INTERVAL_MS=30000 PR_INTERVAL_MS=15000 bun run src/server.ts",
+    "typecheck": "bunx tsc --noEmit",
+    "poll-once": "IGNORE_WORK_HOURS=1 bun -e 'import(\"./src/poll-jira.js\").then(m => m.pollJira()).then(r => console.log(\"jira\", r)); import(\"./src/poll-prs.js\").then(m => m.pollPRs()).then(r => console.log(\"prs\", r))'"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
