@@ -318,7 +318,7 @@
   <tr><th>Key</th><th>Action</th></tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">d</span></td>
-    <td>Detach (session keeps running)</td>
+    <td>Detach (session keeps running in background)</td>
   </tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">s</span></td>
@@ -330,17 +330,57 @@
   </tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">C-s</span></td>
-    <td>Save session (resurrect)</td>
+    <td>Save session manually (resurrect)</td>
   </tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">C-r</span></td>
-    <td>Restore session (resurrect)</td>
+    <td>Restore session manually (resurrect)</td>
   </tr>
 </table>
 
 <div class="tip">
-  <strong>Auto-save:</strong> tmux-continuum saves sessions every 15 min automatically and restores on tmux start.<br>
   <strong>From terminal:</strong> <code>tmux new -s name</code> to create, <code>tmux attach -t name</code> to reconnect, <code>tmux ls</code> to list.
+</div>
+
+<!-- ─── Session Persistence ─── -->
+<h2>Session Persistence</h2>
+<p>Two plugins work together to keep your sessions alive across restarts:</p>
+
+<h3>tmux-resurrect &mdash; manual snapshots</h3>
+<p>Saves and restores the full session state: windows, panes, layouts, and working directories. Running processes (e.g. <code>rails s</code>, <code>nvim</code>) are restored to their pane positions.</p>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">C-s</span></td>
+    <td>Save current session state to disk</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">C-r</span></td>
+    <td>Restore last saved state</td>
+  </tr>
+</table>
+
+<h3>tmux-continuum &mdash; automatic saves</h3>
+<p>Wraps resurrect with a background timer. No manual saves needed for day-to-day use.</p>
+<table>
+  <tr><th>Behaviour</th><th>Detail</th></tr>
+  <tr>
+    <td>Auto-save interval</td>
+    <td>Every 15 minutes</td>
+  </tr>
+  <tr>
+    <td>Auto-restore</td>
+    <td>On <code>tmux</code> start (after reboot or cold start)</td>
+  </tr>
+  <tr>
+    <td>Storage location</td>
+    <td><code>~/.local/share/tmux/resurrect/</code></td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>What survives a reboot:</strong> session names, window names, pane layouts, working directories, pane contents (scrollback). Running processes are re-launched if they were started from the shell.<br>
+  <strong>What does not survive:</strong> live process state (e.g. in-memory Rails server data), SSH connections, anything not started from a shell command.
 </div>
 
 <!-- ─── Copy Mode ─── -->
@@ -389,6 +429,60 @@
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">/</span></td>
     <td>Open command palette (interactive help menu)</td>
+  </tr>
+</table>
+
+<!-- ─── Nvim Integration ─── -->
+<h2>Nvim &amp; Tmux Integration</h2>
+<p>Several config options work together to make nvim feel native inside tmux:</p>
+
+<h3>Seamless pane / split navigation</h3>
+<p><code>vim-tmux-navigator</code> makes <span class="key">C-h/j/k/l</span> work across both nvim splits and tmux panes with no prefix. The tmux config detects when a pane is running nvim using <code>is_vim</code> (checks the process name via <code>ps</code>) and forwards the keystrokes to nvim instead of switching panes. The nvim plugin does the mirror image.</p>
+<table>
+  <tr><th>Key</th><th>Where it goes</th></tr>
+  <tr>
+    <td><span class="no-prefix">no prefix</span> <span class="key">C-h/j/k/l</span></td>
+    <td>Nvim split if nvim is focused, tmux pane otherwise</td>
+  </tr>
+</table>
+
+<h3>Escape latency</h3>
+<p><code>escape-time 0</code> removes tmux's default 500ms wait after <code>Esc</code>. Without this, every <code>Esc</code> in nvim (exit insert mode, dismiss popups) has a noticeable delay because tmux waits to see if it's the start of an escape sequence.</p>
+
+<h3>Focus events</h3>
+<p><code>focus-events on</code> forwards terminal focus events into tmux panes. Nvim uses these to trigger <code>autoread</code>, so buffers automatically reload when you switch back to a pane where a file changed on disk (e.g. after a <code>git pull</code> or formatter run in another pane).</p>
+
+<h3>True color</h3>
+<p>The <code>terminal-overrides</code> lines add <code>RGB</code> capability for both <code>xterm-256color</code> and <code>xterm-ghostty</code>. Without these, nvim colorschemes fall back to 256-color approximations and gruvbox-material looks wrong.</p>
+
+<h3>Undercurl (LSP diagnostics)</h3>
+<p>The <code>Smulx</code> and <code>Setulc</code> overrides enable undercurl rendering and colored underlines inside tmux. Nvim uses these for LSP error/warning/hint indicators. Without them, diagnostics show as plain underlines with no color.</p>
+
+<h3>Clipboard</h3>
+<p><code>set-clipboard on</code> + <code>pbcopy</code> as the copy command means nvim's <code>"+y</code> yank and tmux copy mode both write to the macOS system clipboard. No separate clipboard plugin needed in nvim for this to work inside tmux.</p>
+
+<h3>Notifications (Ghostty passthrough)</h3>
+<p><code>allow-passthrough on</code> lets applications inside tmux send OSC escape sequences directly to Ghostty. Claude Code uses OSC sequences to trigger native notifications &mdash; without passthrough, tmux drops them before they reach Ghostty.</p>
+
+<!-- ─── Ghostty Integration ─── -->
+<h2>Ghostty Integration</h2>
+<table>
+  <tr><th>Feature</th><th>How it works</th></tr>
+  <tr>
+    <td>Tab name = session name</td>
+    <td><code>set-titles on</code> + <code>set-titles-string "#S"</code> sends the session name as the terminal title via OSC 0. Ghostty uses that for the tab label.</td>
+  </tr>
+  <tr>
+    <td>Native notifications</td>
+    <td><code>allow-passthrough on</code> lets OSC notification sequences from inner apps (Claude Code, etc.) reach Ghostty unmodified.</td>
+  </tr>
+  <tr>
+    <td>Bell notifications</td>
+    <td><code>bell-action any</code> + <code>visual-bell off</code> ensures terminal bell passes through to Ghostty for bell-based notification triggers.</td>
+  </tr>
+  <tr>
+    <td>True color</td>
+    <td><code>xterm-ghostty:RGB</code> override enables 24-bit color when Ghostty sets <code>TERM=xterm-ghostty</code>.</td>
   </tr>
 </table>
 
