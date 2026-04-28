@@ -234,7 +234,6 @@ return {
           'srb',
           'tc',
           '--lsp',
-          '--enable-all-experimental-lsp-features',
         },
         filetypes = { 'ruby' },
         root_markers = { 'sorbet/config' },
@@ -347,6 +346,9 @@ return {
       ensure_installed = {},
     }
 
+    -- Apply capabilities globally so all servers get blink.cmp enhancements
+    vim.lsp.config('*', { capabilities = capabilities })
+
     -- Apply server configs from the servers table
     for server_name, config in pairs(servers) do
       vim.lsp.config(server_name, config)
@@ -354,5 +356,32 @@ return {
 
     -- Manually enable bundle-managed servers (Mason can't install these)
     vim.lsp.enable(bundle_servers)
+
+    -- Restart sorbet on git branch change. Sorbet LSP indexes files once at startup
+    -- and does not re-scan after `git switch`, producing -32602 "Unrecognized URI"
+    -- errors for files added on the new branch. Watch .git/HEAD and auto-restart.
+    do
+      local last_head = nil
+      local function current_head()
+        local f = io.open((vim.fn.getcwd() or '.') .. '/.git/HEAD', 'r')
+        if not f then return nil end
+        local head = f:read('*l')
+        f:close()
+        return head
+      end
+      last_head = current_head()
+      vim.api.nvim_create_autocmd({ 'FocusGained', 'DirChanged' }, {
+        callback = function()
+          local head = current_head()
+          if head and last_head and head ~= last_head then
+            vim.cmd('LspRestart sorbet')
+          end
+          last_head = head
+        end,
+      })
+      vim.api.nvim_create_user_command('SorbetRestart', function()
+        vim.cmd('LspRestart sorbet')
+      end, {})
+    end
   end,
 }

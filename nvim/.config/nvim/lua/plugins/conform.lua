@@ -47,6 +47,7 @@ return {
       html = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
       json = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
       graphql = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
+      ruby = { 'rubocop' },
     },
   },
 }
