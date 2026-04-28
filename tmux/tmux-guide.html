@@ -168,7 +168,7 @@
 <body>
 
 <h1>tmux <span>keybind guide</span></h1>
-<p class="subtitle">Prefix: <span class="key">C-a</span> &mdash; hold <code>a</code> (Ctrl via homerow mods) + tap <code>a</code></p>
+<p class="subtitle">Prefix: <span class="key">C-Space</span> &mdash; hold <code>a</code> or <code>;</code> (Ctrl via homerow mods) + tap <code>Space</code></p>
 
 <!-- ─── Concepts ─── -->
 <h2>Concepts</h2>
@@ -188,15 +188,16 @@
   <dt>Window</dt>
   <dd>A full-screen tab containing one or more panes. Like browser tabs. Only one window visible at a time. Names shown in the status bar.</dd>
   <dt>Session</dt>
-  <dd>A complete workspace containing multiple windows. Survives disconnection &mdash; detach with <span class="key">C-a d</span>, reconnect with <code>tmux attach</code>.</dd>
+  <dd>A complete workspace containing multiple windows. Survives disconnection &mdash; detach with <span class="key">C-Space d</span>, reconnect with <code>tmux attach</code>. Name shown in Ghostty tab.</dd>
 </dl>
 
 <div class="tip">
   <strong>Typical workflow:</strong> One session per project. Multiple windows per concern (editor, server, tests). Panes for side-by-side within a window.
 </div>
 
-<!-- ─── Navigation ─── -->
-<h2>Navigation</h2>
+<!-- ─── No-Prefix Shortcuts ─── -->
+<h2>No-Prefix Shortcuts</h2>
+<p>These fire instantly without the prefix key.</p>
 <table>
   <tr><th>Key</th><th>Action</th></tr>
   <tr>
@@ -204,9 +205,39 @@
     <td>Move between panes (seamless with nvim splits)</td>
   </tr>
   <tr>
-    <td><span class="prefix">prefix</span> <span class="key">1</span> &ndash; <span class="key">9</span></td>
+    <td><span class="no-prefix">no prefix</span> <span class="key">M-1</span> &ndash; <span class="key">M-9</span></td>
     <td>Jump to window by number</td>
   </tr>
+  <tr>
+    <td><span class="no-prefix">no prefix</span> <span class="key">M-t</span></td>
+    <td>New window (current path)</td>
+  </tr>
+  <tr>
+    <td><span class="no-prefix">no prefix</span> <span class="key">M-z</span></td>
+    <td>Zoom / unzoom pane</td>
+  </tr>
+  <tr>
+    <td><span class="no-prefix">no prefix</span> <span class="key">M-\</span></td>
+    <td>Split horizontal (side by side)</td>
+  </tr>
+  <tr>
+    <td><span class="no-prefix">no prefix</span> <span class="key">M--</span></td>
+    <td>Split vertical (top / bottom)</td>
+  </tr>
+  <tr>
+    <td><span class="no-prefix">no prefix</span> <span class="key">M-x</span></td>
+    <td>Kill pane</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Alt via homerow:</strong> Hold <code>s</code> (Alt, left hand) or <code>l</code> (Alt, right hand) + tap the key.
+</div>
+
+<!-- ─── Navigation ─── -->
+<h2>Navigation</h2>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">n</span></td>
     <td>Next window</td>
@@ -217,7 +248,7 @@
   </tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">s</span></td>
-    <td>List &amp; switch sessions</td>
+    <td>List &amp; switch sessions (tree view)</td>
   </tr>
 </table>
 
@@ -242,12 +273,20 @@
     <td>Zoom / unzoom pane (fullscreen toggle)</td>
   </tr>
   <tr>
+    <td><span class="prefix">prefix</span> <span class="key">!</span></td>
+    <td>Break pane out to new window</td>
+  </tr>
+  <tr>
     <td><span class="prefix">prefix</span> <span class="key">{</span></td>
     <td>Swap pane up</td>
   </tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">}</span></td>
     <td>Swap pane down</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">y</span></td>
+    <td>Toggle sync panes (broadcast input to all panes)</td>
   </tr>
 </table>
 
@@ -262,6 +301,10 @@
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">,</span></td>
     <td>Rename window</td>
+  </tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">.</span></td>
+    <td>Move window (reorder)</td>
   </tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">X</span></td>
@@ -283,7 +326,7 @@
   </tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">$</span></td>
-    <td>Rename session</td>
+    <td>Rename session (updates Ghostty tab name)</td>
   </tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">C-s</span></td>
@@ -296,6 +339,7 @@
 </table>
 
 <div class="tip">
+  <strong>Auto-save:</strong> tmux-continuum saves sessions every 15 min automatically and restores on tmux start.<br>
   <strong>From terminal:</strong> <code>tmux new -s name</code> to create, <code>tmux attach -t name</code> to reconnect, <code>tmux ls</code> to list.
 </div>
 
@@ -334,10 +378,14 @@
   </tr>
 </table>
 
-<!-- ─── Help ─── -->
-<h2>Help</h2>
+<!-- ─── Config ─── -->
+<h2>Config</h2>
 <table>
   <tr><th>Key</th><th>Action</th></tr>
+  <tr>
+    <td><span class="prefix">prefix</span> <span class="key">r</span></td>
+    <td>Reload config</td>
+  </tr>
   <tr>
     <td><span class="prefix">prefix</span> <span class="key">/</span></td>
     <td>Open command palette (interactive help menu)</td>
@@ -346,7 +394,7 @@
 
 <!-- ─── Homerow Mods ─── -->
 <h2>Homerow Mod Notes</h2>
-<p>All keybinds designed for homerow mods (Glove80 &amp; MacBook + kmonad):</p>
+<p>All keybinds designed for homerow mods (Glove80 &amp; MacBook):</p>
 <table>
   <tr><th>Finger</th><th>Tap</th><th>Hold</th></tr>
   <tr><td>Left pinky</td><td><span class="key-plain">a</span></td><td>Ctrl</td></tr>
@@ -360,13 +408,14 @@
 </table>
 
 <div class="tip">
-  <strong>C-a prefix:</strong> Hold <code>a</code> (becomes Ctrl at 150ms) then tap <code>a</code> again. Same finger twice but quick.<br>
-  <strong>C-h/j/k/l nav:</strong> Hold <code>a</code> (Ctrl, left) + tap <code>h/j/k/l</code> (right hand). Bilateral, no conflict.
+  <strong>C-Space prefix:</strong> Hold <code>a</code> or <code>;</code> (Ctrl) then tap <code>Space</code>. Bilateral, comfortable.<br>
+  <strong>M-* shortcuts:</strong> Hold <code>s</code> or <code>l</code> (Alt) then tap the key. No prefix needed &mdash; instant.<br>
+  <strong>C-h/j/k/l nav:</strong> Hold <code>a</code> (Ctrl, left) + tap <code>h/j/k/l</code> (right hand). Seamless with nvim splits.
 </div>
 
 <div class="footer">
   Config: <code>~/.config/tmux/tmux.conf</code> &nbsp;|&nbsp;
-  Reload: <code>tmux source ~/.config/tmux/tmux.conf</code> &nbsp;|&nbsp;
+  Reload: <span class="key" style="font-size:0.75rem">prefix + r</span> &nbsp;|&nbsp;
   <a href="https://github.com/kelvinscuesta/dotfiles">dotfiles</a>
 </div>
 
