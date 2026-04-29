@@ -236,7 +236,7 @@ return {
           '--lsp',
         },
         filetypes = { 'ruby' },
-        root_markers = { 'sorbet/config' },
+        root_markers = { 'sorbet', 'Gemfile' },
         capabilities = capabilities,
       },
 
@@ -244,7 +244,7 @@ return {
       rubocop = {
         cmd = { 'bundle', 'exec', 'rubocop', '--lsp' },
         filetypes = { 'ruby' },
-        root_markers = { '.rubocop.yml' },
+        root_markers = { '.rubocop.yml', 'Gemfile' },
         capabilities = capabilities,
         init_options = {
           safeAutocorrect = true,
