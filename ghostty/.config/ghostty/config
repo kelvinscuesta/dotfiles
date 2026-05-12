@@ -1,2 +1,1 @@
-keybind = shift+enter=text:\x1b\r
 command = tmux new-session
