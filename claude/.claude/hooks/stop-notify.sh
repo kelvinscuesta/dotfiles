@@ -37,7 +37,14 @@ TITLE="Claude Code"
 # terminal-notifier depends on mise PATH which tmux may not inherit.
 /usr/bin/osascript -e "display notification \"$MSG\" with title \"$TITLE\" sound name \"Tink\"" 2>/dev/null || true
 
-# Also ring terminal bell so tmux monitor-bell can forward to Ghostty
+# Ghostty-native OSC 9 notification (shows with Ghostty icon in Notification Center)
+if [[ -n "${TMUX:-}" ]]; then
+  printf '\ePtmux;\e\e]9;%s\a\e\\' "$MSG"
+else
+  printf '\e]9;%s\a' "$MSG"
+fi
+
+# Terminal bell as fallback
 printf '\a'
 
 # If workflow active, mirror to Slack via notify-slack.sh
