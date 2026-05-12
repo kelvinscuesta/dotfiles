@@ -18,7 +18,20 @@ Create well-structured, reviewable pull requests. Primary tool: GitHub CLI (gh).
 6. Ask about workflow execution summary
 7. Check for repo PR template
 8. Generate PR title and description
-9. Create draft PR: `gh pr create --draft`
+9. Create draft PR: `gh pr create --draft --title "$TITLE" --body-file /tmp/pr-body-$$.md`
+   **CRITICAL:** Always build the body in a temp file first and pass via `--body-file`.
+   NEVER use `--body "$(cat <<EOF ...)"` — if `cat` is aliased to `bat`, the body
+   will be wrapped in box-drawing decorations + line numbers. Writing to a file
+   then passing `--body-file` bypasses all shell piping + aliases.
+
+   Write template the safe way:
+   ```bash
+   BODY_FILE=$(mktemp /tmp/pr-body-XXXXXX.md)
+   printf '%s\n' "$PR_BODY_CONTENT" > "$BODY_FILE"
+   gh pr create --draft --title "$TITLE" --body-file "$BODY_FILE"
+   rm -f "$BODY_FILE"
+   ```
+
 10. Report PR URL
 
 ## Branch Naming
@@ -40,10 +53,10 @@ Format: kebab-case
 
 ### Check for Repo Template FIRST
 `YOUR_SLACK_CHANNEL_ID``bash
-cat .github/PULL_REQUEST_TEMPLATE.md 2>/dev/null || \
-cat .github/pull_request_template.md 2>/dev/null || \
-cat docs/PULL_REQUEST_TEMPLATE.md 2>/dev/null || \
-cat PULL_REQUEST_TEMPLATE.md 2>/dev/null
+command cat .github/PULL_REQUEST_TEMPLATE.md 2>/dev/null || \
+command cat .github/pull_request_template.md 2>/dev/null || \
+command cat docs/PULL_REQUEST_TEMPLATE.md 2>/dev/null || \
+command cat PULL_REQUEST_TEMPLATE.md 2>/dev/null
 `YOUR_SLACK_CHANNEL_ID``
 
 ### If Template Found
