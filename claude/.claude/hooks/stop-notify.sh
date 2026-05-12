@@ -28,9 +28,10 @@ if [[ -n "$TRANSCRIPT" && -f "$TRANSCRIPT" ]]; then
   # Last assistant message with text content — what Claude said/did
   SUMMARY=$(tail -30 "$TRANSCRIPT" \
     | jq -r 'select(.type == "assistant") | [.message.content[]? | select(.type == "text") | .text] | join(" ")' 2>/dev/null \
-    | grep -v '^$' | tail -1 \
+    | sed '/^$/d' | tail -1 \
     | sed 's/\*\*//g; s/`//g; s/\n/ /g' \
-    | cut -c1-120)
+    | cut -c1-120 \
+    || true)
 
   # Duration: first timestamped entry → last
   FIRST_TS=$(jq -r 'select(.timestamp != null) | .timestamp' "$TRANSCRIPT" 2>/dev/null | head -1)
