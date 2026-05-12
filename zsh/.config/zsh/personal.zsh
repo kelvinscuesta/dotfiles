@@ -16,7 +16,6 @@ alias l='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
 alias lt='ls --tree'
-alias cat='bat'
 alias md='mdcat -p'
 
 # Aliases - git
@@ -42,6 +41,7 @@ alias reload='exec zsh'
 # Aliases - tools
 alias lzd='lazydocker'
 alias runkmonad='sudo ~/kmonadbin ~/.kmonad.kbd'
+alias tmux-guide='open ~/dotfiles/tmux/tmux-guide.html'
 
 # Pager
 export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
@@ -76,3 +76,29 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Mise (version manager)
 eval "$(mise activate zsh)"
+
+# -----------------
+# tmux autostart
+# -----------------
+# Auto-attach (or auto-create) tmux session when opening an interactive shell.
+# Pairs with tmux-continuum (@continuum-restore on) to restore last saved
+# session after reboot.
+#
+# Conditions:
+#   $TMUX empty             → not already inside tmux (prevents nesting)
+#   $- contains 'i'         → interactive shell only (skip scripts/cron)
+#   $NO_TMUX unset          → user opt-out: `NO_TMUX=1 zsh` for plain shell
+#   $TERM_PROGRAM=ssh-skip  → if you want SSH to skip, set in ssh config
+#
+# Behavior:
+#   tmux attach             → connects to existing session if any
+#   ||                      → fall-through on failure (no session yet)
+#   tmux new-session        → creates fresh session; continuum auto-restores
+#                             from last save if @continuum-restore is on
+#
+# To bypass on demand:
+#   NO_TMUX=1 ghostty       → opens terminal without tmux
+#   command zsh             → spawns plain zsh inside an existing tmux pane
+if [[ -z "$TMUX" ]] && [[ $- == *i* ]] && [[ -z "$NO_TMUX" ]]; then
+  tmux attach 2>/dev/null || tmux new-session
+fi
