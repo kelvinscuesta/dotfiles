@@ -3,7 +3,7 @@
 # Reads transcript for context: what Claude did, how long it took
 # Primary: Ghostty OSC 9 (clickable). Fallback: osascript.
 
-set -euo pipefail
+set +e
 
 [[ "${WF_HEADLESS:-0}" == "1" ]] && exit 0
 
