@@ -7,14 +7,38 @@ set -euo pipefail
 [[ "${WF_HEADLESS:-0}" == "1" ]] && exit 0
 
 CWD=$(basename "$(pwd)")
-TITLE="Claude Code"
-MSG="Turn finished in $CWD"
 
-if command -v terminal-notifier >/dev/null 2>&1; then
-  terminal-notifier -title "$TITLE" -message "$MSG" -sound Tink -group claude-code 2>/dev/null
-elif command -v osascript >/dev/null 2>&1; then
-  osascript -e "display notification \"$MSG\" with title \"$TITLE\" sound name \"Tink\"" 2>/dev/null
+# Add branch context if in a git repo
+BRANCH=""
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  BRANCH=$(git branch --show-current 2>/dev/null || true)
 fi
+
+# Build message with context
+if [[ -n "$BRANCH" ]]; then
+  TICKET=$(echo "$BRANCH" | grep -oE '[A-Z]+-[0-9]+' | head -1 || true)
+  if [[ -n "$TICKET" ]]; then
+    MSG="Done in $CWD ($TICKET)"
+  else
+    MSG="Done in $CWD [$BRANCH]"
+  fi
+else
+  MSG="Done in $CWD"
+fi
+
+# Background agent context — prefix so you know which agent finished
+if [[ -n "${CLAUDE_JOB_DIR:-}" ]]; then
+  MSG="[bg] $MSG"
+fi
+
+TITLE="Claude Code"
+
+# Prefer osascript — always at /usr/bin/osascript, no PATH issues inside tmux.
+# terminal-notifier depends on mise PATH which tmux may not inherit.
+/usr/bin/osascript -e "display notification \"$MSG\" with title \"$TITLE\" sound name \"Tink\"" 2>/dev/null || true
+
+# Also ring terminal bell so tmux monitor-bell can forward to Ghostty
+printf '\a'
 
 # If workflow active, mirror to Slack via notify-slack.sh
 if [[ -f ~/.claude/workflow/.env && -x ~/.claude/workflow/scripts/notify-slack.sh ]]; then
