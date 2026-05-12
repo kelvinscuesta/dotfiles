@@ -3,6 +3,13 @@
 # Inserts a blank line between shell prompts
 add_newline = true
 
+[custom.worktree]
+command = 'basename $(git rev-parse --git-dir)'
+when = 'git rev-parse --git-dir 2>/dev/null | grep -q "worktrees"'
+style = "bold cyan"
+symbol = "⑂ "
+format = "[$symbol$output]($style) "
+
 
 [aws]
 symbol = "  "
