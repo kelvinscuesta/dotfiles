@@ -63,6 +63,11 @@ if [ -n "$cwd" ] && cd "$cwd" 2>/dev/null && git rev-parse --git-dir > /dev/null
         if [ -n "$(git ls-files --others --exclude-standard 2>/dev/null | head -1)" ]; then
             git_part+="${red}?${reset}"
         fi
+        git_dir=$(git rev-parse --git-dir 2>/dev/null)
+        if [[ "$git_dir" == *"/worktrees/"* ]]; then
+            wt_name=$(basename "$git_dir")
+            git_part+=" ${cyan}⑂ ${wt_name}${reset}"
+        fi
         parts+=("$git_part")
         ticket=$(echo "$branch" | grep -oE '[A-Z]+-[0-9]+' | head -1)
         if [ -n "$ticket" ]; then
