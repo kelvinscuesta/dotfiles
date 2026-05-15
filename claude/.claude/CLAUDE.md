@@ -5,6 +5,7 @@
 
 
 - Only ever create draft PRs, never in "ready for review" state.
+- PR title format: `[{TICKET-ID}]: {ticket title}` — look up ticket title from Jira if possible, otherwise use a concise description derived from the commits
 - When tagging Claude in GitHub, use '@claude'
 - It is ok to rebase and organize commits on local branches that haven't been pushed to origin yet
 - It is NOT ok to rebase on PR branches once a PR is out of Draft mode
