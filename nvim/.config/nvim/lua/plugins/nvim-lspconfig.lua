@@ -62,27 +62,26 @@ return {
           })
         end
 
-        -- The following code creates a keymap to toggle inlay hints in your
-        -- code, if the language server you are using supports them
-        -- inlay hints
-        -- This may be unwanted, since they displace some of your code
-        -- if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-        --   map('<leader>th', function()
-        --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-        --   end, '[T]oggle Inlay [H]ints')
-        -- end
-        -- toggle inlay hints off when entering insert and toggle on when leaving
-        -- vim.api.nvim_create_autocmd('InsertEnter', {
-        --   callback = function()
-        --     vim.lsp.inlay_hint.enable(false)
-        --   end,
-        -- })
-        --
-        -- vim.api.nvim_create_autocmd('InsertLeave', {
-        --   callback = function()
-        --     vim.lsp.inlay_hint.enable(true)
-        --   end,
-        -- })
+        -- Inlay hints: enable by default, hide in insert mode to avoid text shifting
+        if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+          vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+          map('<leader>th', function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+          end, '[T]oggle Inlay [H]ints')
+        end
+
+        vim.api.nvim_create_autocmd('InsertEnter', {
+          buffer = event.buf,
+          callback = function()
+            vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
+          end,
+        })
+        vim.api.nvim_create_autocmd('InsertLeave', {
+          buffer = event.buf,
+          callback = function()
+            vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+          end,
+        })
       end,
     })
 
@@ -99,24 +98,8 @@ return {
           [vim.diagnostic.severity.HINT] = '󰌶 ',
         },
       } or {}, -- nerd font icons in sign column
-      -- virtual_lines = {
-      --   current_line = true,
-      -- },
-      --@type vim.diagnostic.Opts.VirtualText
-      -- virtual_text = {
-      --   enabled = false,
-      --   source = 'if_many',
-      --   spacing = 2,
-      --   format = function(diagnostic)
-      --     local diagnostic_message = {
-      --       [vim.diagnostic.severity.ERROR] = diagnostic.message,
-      --       [vim.diagnostic.severity.WARN] = diagnostic.message,
-      --       [vim.diagnostic.severity.INFO] = diagnostic.message,
-      --       [vim.diagnostic.severity.HINT] = diagnostic.message,
-      --     }
-      --     return diagnostic_message[diagnostic.severity]
-      --   end,
-      -- },
+      virtual_lines = { current_line = true },
+      virtual_text = false,
     }
 
     -- Capabilities: tell LSP servers what features neovim/blink.cmp support
@@ -172,8 +155,11 @@ return {
       -- Bash/Shell
       bashls = { filetypes = { 'sh', 'zsh' } },
 
-      -- GraphQL
-      graphql = {},
+      -- GraphQL — reads graphql.config.js for schema + documents (fragment resolution)
+      graphql = {
+        filetypes = { 'graphql' },
+        root_markers = { 'graphql.config.js', 'graphql.config.ts', '.graphqlrc.yml', '.graphqlrc.json', '.graphqlrc' },
+      },
 
       -- TypeScript/JavaScript (vtsls = fast TS server, alternative to ts_ls)
       vtsls = {
@@ -223,6 +209,28 @@ return {
           packageManager = 'yarn',
           codeActionOnSave = { enable = true, mode = 'all' },
           -- formatting disabled - conform handles it with prettier
+        },
+      },
+
+      -- Ruby: ruby-lsp (Shopify) — go-to-def, symbols, diagnostics for all Ruby files
+      -- Uses its own .ruby-lsp/Gemfile (eval_gemfile's the project Gemfile + adds ruby-lsp).
+      -- Must NOT use `bundle exec` — ruby-lsp bootstraps its own composed bundle.
+      ruby_lsp = {
+        cmd = { 'ruby-lsp' },
+        filetypes = { 'ruby' },
+        root_markers = { 'Gemfile', '.ruby-lsp' },
+        capabilities = capabilities,
+        init_options = {
+          enabledFeatures = {
+            definition = true,
+            references = true,
+            documentSymbols = true,
+            workspaceSymbol = true,
+            codeActions = true,
+            diagnostics = true,
+            hover = true,
+            completion = false, -- sorbet handles this
+          },
         },
       },
 
@@ -325,7 +333,7 @@ return {
     }
 
     -- Servers managed via bundle exec (not Mason-installable)
-    local bundle_servers = { 'sorbet', 'rubocop' }
+    local bundle_servers = { 'ruby_lsp', 'sorbet', 'rubocop' } -- ruby_lsp self-bootstraps but still needs manual enable
 
     -- Mason: auto-install servers and tools (run :Mason to manage)
     local ensure_installed = vim.tbl_filter(function(name)
