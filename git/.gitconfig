@@ -109,3 +109,5 @@
 	line-numbers-zero-style = "#7c6f64"
 	hunk-header-style = syntax bold
 	hunk-header-decoration-style = "#d8a657" ul ol
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
