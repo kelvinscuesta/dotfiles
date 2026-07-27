@@ -1,27 +1,42 @@
--- Treesitter: syntax parsing for better highlighting, indentation, and code understanding
--- Parsers are auto-installed; powers many other plugins (autotag, textobjects, etc.)
+-- Treesitter: syntax parsing for highlighting, indentation, and code understanding
 return {
-  -- Core treesitter
+  -- Core treesitter (0.12: main branch, parser installer only)
   {
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate', -- update parsers on install
-    main = 'nvim-treesitter.configs',
-    opts = {
-      ensure_installed = {
+    branch = 'main',
+    build = ':TSUpdate',
+    config = function()
+      require('nvim-treesitter').setup()
+
+      local parsers = {
         'bash', 'html', 'css', 'graphql',
         'javascript', 'typescript', 'tsx', 'json', 'json5',
         'lua', 'luadoc', 'markdown', 'vim',
         'go', 'gomod', 'gowork', 'gosum',
         'git_config', 'haskell', 'sql', 'python', 'toml', 'ruby', 'regex', 'latex',
-      },
-      auto_install = true, -- install missing parsers on file open
-      highlight = { enable = true, additional_vim_regex_highlighting = false },
-      indent = { enable = true }, -- treesitter-based indentation
-    },
+        'lean',
+      }
+
+      local installed = require('nvim-treesitter').installed()
+      local to_install = vim.tbl_filter(function(p)
+        return not vim.tbl_contains(installed, p)
+      end, parsers)
+      if #to_install > 0 then
+        require('nvim-treesitter').install(to_install)
+      end
+
+      -- Highlighting + indentation via native treesitter (not plugin)
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('treesitter-start', { clear = true }),
+        callback = function()
+          pcall(vim.treesitter.start)
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
+    end,
   },
 
   -- Treesitter-context: show function/class context at top of window
-  -- Toggle: <leader>ut
   {
     'nvim-treesitter/nvim-treesitter-context',
     event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
@@ -39,7 +54,6 @@ return {
   },
 
   -- Treewalker: navigate AST nodes with Alt+hjkl
-  -- Move between sibling nodes, into/out of parent nodes
   {
     'aaronik/treewalker.nvim',
     keys = {
