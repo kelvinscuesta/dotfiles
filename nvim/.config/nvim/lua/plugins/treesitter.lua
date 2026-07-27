@@ -42,7 +42,6 @@ return {
   -- Move between sibling nodes, into/out of parent nodes
   {
     'aaronik/treewalker.nvim',
-    event = 'VeryLazy',
     keys = {
       { '<A-j>', '<cmd>Treewalker Down<CR>', mode = { 'n', 'v' }, desc = 'Treewalker Down' },
       { '<A-k>', '<cmd>Treewalker Up<CR>', mode = { 'n', 'v' }, desc = 'Treewalker Up' },
