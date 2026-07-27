@@ -45,10 +45,6 @@ vim.opt.timeoutlen = 300 -- time to wait for mapped sequence (ms), affects which
 vim.opt.list = true -- show invisible characters
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' } -- symbols for tab, trailing space, non-breaking space
 
--- Syntax (disabled, treesitter handles highlighting)
-vim.opt.syntax = 'off'
-vim.cmd.syntax 'manual'
-
 -- Folding
 vim.opt.foldenable = false -- start with all folds open
 
