@@ -4,6 +4,16 @@
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
+# Theme: follow macOS appearance for bat/delta
+if defaults read -g AppleInterfaceStyle &>/dev/null; then
+  export BAT_THEME="Catppuccin Mocha"
+else
+  export BAT_THEME="Catppuccin Latte"
+  export GIT_CONFIG_COUNT=1
+  export GIT_CONFIG_KEY_0="delta.syntax-theme"
+  export GIT_CONFIG_VALUE_0="gruvbox-light"
+fi
+
 # Aliases - editor
 alias vim='nvim'
 alias nvimconfig='nvim ~/.config/nvim/'

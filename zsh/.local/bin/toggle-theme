@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Toggle macOS dark/light mode — cascades to Ghostty, Neovim, bat, delta
+set -euo pipefail
+
+current=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
+
+if [[ "$current" == "Dark" ]]; then
+  mode="light"
+  osascript -e 'tell app "System Events" to tell appearance preferences to set dark mode to false'
+else
+  mode="dark"
+  osascript -e 'tell app "System Events" to tell appearance preferences to set dark mode to true'
+fi
+
+# Neovim: toggle background in all running instances
+for sock in /tmp/nvim.*/0 /run/user/*/nvim.*/0 "$XDG_RUNTIME_DIR"/nvim.*/0 2>/dev/null; do
+  [ -S "$sock" ] && nvim --server "$sock" --remote-expr "execute('set background=$mode')" 2>/dev/null &
+done
+
+echo "Switched to $mode mode"

@@ -1,5 +1,7 @@
 -- Fonts & Colors
 vim.g.have_nerd_font = true -- enable nerd font icons throughout config
+-- Follow macOS appearance
+vim.o.background = (vim.fn.system('defaults read -g AppleInterfaceStyle 2>/dev/null'):find('Dark')) and 'dark' or 'light'
 -- Line Numbers
 vim.opt.relativenumber = true -- show relative line numbers for easy jumping (e.g., 5j)
 
