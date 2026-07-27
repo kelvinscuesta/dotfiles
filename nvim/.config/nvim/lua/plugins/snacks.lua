@@ -89,7 +89,7 @@ return {
     {
       '<leader>n',
       function()
-        Snacks.picker.notifications()
+        Snacks.notifier.show_history()
       end,
       desc = 'Notification History',
     },
@@ -244,13 +244,6 @@ return {
         Snacks.picker.autocmds()
       end,
       desc = 'Autocmds',
-    },
-    {
-      '<leader>sb',
-      function()
-        Snacks.picker.lines()
-      end,
-      desc = 'Buffer Lines',
     },
     {
       '<leader>sc',
@@ -443,13 +436,6 @@ return {
         Snacks.zen.zoom()
       end,
       desc = 'Toggle Zoom',
-    },
-    {
-      '<leader>n',
-      function()
-        Snacks.notifier.show_history()
-      end,
-      desc = 'Notification History',
     },
     {
       '<leader>bd',
