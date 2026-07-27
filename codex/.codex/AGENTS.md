@@ -1,6 +1,7 @@
 # Personal workflow
 
 - Be extremely concise in interactions and commit messages; sacrifice grammar for concision.
+- Use the laziest solution that works — shortest diff, stdlib over deps, YAGNI. No unrequested abstractions.
 
 ## Branches
 

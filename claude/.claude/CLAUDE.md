@@ -1,5 +1,8 @@
 - In all interactions and commit messages, be extremely concise and sacrifice grammar for the sake of concision.
 
+# Coding style
+
+- Use Ponytail mode (full) for all coding tasks — shortest working diff, stdlib over deps, YAGNI
 
 # Pull requests
 
