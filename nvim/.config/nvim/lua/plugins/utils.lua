@@ -4,5 +4,5 @@ return {
   'tpope/vim-sleuth',
 
   -- todo-comments: highlight and search TODO, FIXME, HACK, etc.
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = true } },
+  { 'folke/todo-comments.nvim', event = 'VimEnter', opts = { signs = true } },
 }

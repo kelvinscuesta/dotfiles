@@ -1,4 +1,9 @@
 return {
+  -- ponytail: suppress "Command setContext not found" errors —
+  -- vtsls sends VSCode-specific commands that nvim doesn't support
+  handlers = {
+    ['workspace/executeCommand'] = function(_, result) return result end,
+  },
   filetypes = {
     'javascript',
     'javascriptreact',

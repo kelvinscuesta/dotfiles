@@ -27,6 +27,9 @@ return {
       hover = { enabled = true, silent = true },
     },
 
+    -- Let snacks handle these (avoid conflict)
+    messages = { view_search = false },
+
     -- Presets: pre-configured UI layouts
     presets = {
       bottom_search = true, -- classic search at bottom
