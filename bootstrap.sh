@@ -33,4 +33,12 @@ if [[ -f ~/dotfiles/kmonad/local.kmonad.plist ]]; then
   fi
 fi
 
+# Toggle theme shortcut: Cmd+Opt+Ctrl+T
+if [[ -d ~/Library/Services/toggle\ light\ dark.workflow ]]; then
+  echo "[macos] Setting Cmd+Opt+Ctrl+T shortcut for theme toggle..."
+  defaults write pbs NSServicesStatus -dict-add \
+    '"(null) - toggle light dark - runWorkflowAsService"' \
+    '{ "key_equivalent" = "@~^t"; "presentation_modes" = { ContextMenu = 1; ServicesMenu = 1; TouchBar = 1; }; }'
+fi
+
 echo "=== Done ==="

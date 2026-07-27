@@ -14,7 +14,7 @@ cd ~/dotfiles
 brew bundle
 
 # 3. Stow packages (see package list below)
-stow zsh claude codex nvim git ghostty starship bat tmux kanata
+stow zsh claude codex nvim git ghostty starship bat tmux kanata macos
 
 # 4. Post-stow setup
 ./bootstrap.sh
@@ -40,6 +40,7 @@ mise install
 | `tmux` | tmux config + plugins | `~/.config/tmux/` |
 | `kanata` | Homerow mods (kanata + Karabiner DriverKit) | `~/.config/kanata/` |
 | `karabiner` | Karabiner-Elements config | `~/.config/karabiner/` |
+| `macos` | Theme toggle (Cmd+Opt+Ctrl+T) | `~/Library/Services/` |
 | `glove80` | Glove80 keymap (reference, not stowed) | — |
 
 ### Work-only (Gusto machine)
