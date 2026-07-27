@@ -10,9 +10,8 @@
 	signingkey = /Users/kelvin.cuesta/.ssh/id_ed25519.pub
 [core]
 	pager = delta
-[maintenance]
-	repo = /Users/kelvin.cuesta/workspace/zenpayroll
-	repo = /Users/kelvin.cuesta/workspace/web
+[include]
+	path = ~/.gitconfig.local
 [interactive]
 	diffFilter = delta --color-only
 [color]
