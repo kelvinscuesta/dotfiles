@@ -19,12 +19,16 @@ return {
     },
     -- Key group labels (shown in which-key popup)
     spec = {
+      { '<leader>b', group = 'Buffer' },
       { '<leader>c', group = 'Code', mode = { 'n', 'x' } },
       { '<leader>d', group = 'Document' },
+      { '<leader>f', group = 'Find' },
+      { '<leader>g', group = 'Git' },
+      { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
       { '<leader>r', group = 'Rename' },
       { '<leader>s', group = 'Search' },
       { '<leader>t', group = 'Toggle' },
-      { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
+      { '<leader>u', group = 'UI' },
     },
   },
 }
