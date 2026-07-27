@@ -2,6 +2,7 @@
 -- A "hunk" is a contiguous block of changed lines (added, modified, or deleted)
 return {
   'lewis6991/gitsigns.nvim',
+  event = { 'BufReadPost', 'BufNewFile' },
   opts = {
     signs = {
       add = { text = '+' },
