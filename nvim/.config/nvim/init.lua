@@ -1,5 +1,5 @@
 -- enable experimental lua loader
-vim.loader.enable(true)
+vim.loader.enable()
 
 require 'config.keymap'
 require 'config.options'
