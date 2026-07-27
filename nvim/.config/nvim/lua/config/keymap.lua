@@ -21,19 +21,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Quick Actions
 vim.keymap.set('n', '<leader>w', '<cmd>w!<CR>', { desc = 'Save buffer' })
 vim.keymap.set('n', '<leader>q', '<cmd>q<CR>', { desc = 'Close window' })
-vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode', noremap = true })
+vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
 
--- Buffer Navigation
-vim.keymap.set('n', '<leader>bn', ':bnext<CR>', { desc = 'Next buffer', noremap = true, silent = true })
-vim.keymap.set('n', '<leader>bp', ':bprevious<CR>', { desc = 'Previous buffer', noremap = true, silent = true })
-vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete buffer', noremap = true, silent = true })
-vim.keymap.set('n', '<leader>bl', ':b#<CR>', { desc = 'Last buffer', noremap = true, silent = true })
-
--- Autocommands
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Briefly highlight yanked text',
-  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
+-- Buffer Navigation (bd handled by snacks.bufdelete)
+vim.keymap.set('n', '<leader>bn', '<cmd>bnext<CR>', { desc = 'Next buffer', silent = true })
+vim.keymap.set('n', '<leader>bp', '<cmd>bprevious<CR>', { desc = 'Previous buffer', silent = true })
+vim.keymap.set('n', '<leader>bl', '<cmd>b#<CR>', { desc = 'Last buffer', silent = true })

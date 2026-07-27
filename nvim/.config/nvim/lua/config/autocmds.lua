@@ -114,3 +114,12 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p') -- create dirs recursively
   end,
 })
+
+-- Yank highlight: briefly flash yanked text
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Briefly highlight yanked text',
+  group = augroup 'highlight_yank',
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
