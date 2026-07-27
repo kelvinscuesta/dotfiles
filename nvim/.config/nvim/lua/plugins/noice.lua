@@ -6,7 +6,6 @@ return {
   event = 'VeryLazy', -- load after startup
   dependencies = {
     'MunifTanjim/nui.nvim', -- UI component library
-    'rcarriga/nvim-notify', -- notification manager
   },
   opts = {
     -- LSP Integration
@@ -15,7 +14,6 @@ return {
         -- use treesitter for markdown rendering in LSP popups
         ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
         ['vim.lsp.util.stylize_markdown'] = true,
-        ['cmp.entry.get_documentation'] = true,
       },
       signature = {
         enabled = true,
