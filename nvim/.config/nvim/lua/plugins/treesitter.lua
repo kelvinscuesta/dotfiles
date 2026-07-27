@@ -14,10 +14,9 @@ return {
         'lua', 'luadoc', 'markdown', 'vim',
         'go', 'gomod', 'gowork', 'gosum',
         'git_config', 'haskell', 'sql', 'python', 'toml', 'ruby', 'regex', 'latex', 'yaml',
-        'lean',
       }
 
-      local installed = require('nvim-treesitter').installed()
+      local installed = require('nvim-treesitter').get_installed()
       local to_install = vim.tbl_filter(function(p)
         return not vim.tbl_contains(installed, p)
       end, parsers)
