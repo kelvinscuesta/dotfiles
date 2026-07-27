@@ -47,12 +47,11 @@ mise install
 | Package | Contents | Extra setup |
 |---------|----------|-------------|
 | `zsh-work` | `work.zsh` (Gusto repos, AWS, monorepo aliases) | Needs `~/.gusto/init.sh` from Gusto config_files repo |
-| `claude-work` | Work settings, MCP servers, workflow automation | Needs `.env` (see below) |
-| `skhd` | Hotkeys for workflow-server | Paths hardcoded to `~/.claude/workflow-server/` |
+| `claude-work` | Work settings, MCP servers, workflow automation, skhd hotkeys | Needs `.env` (see below) |
 
 ```bash
 # Work machine — add these after personal packages:
-stow zsh-work claude-work skhd
+stow zsh-work claude-work
 ```
 
 #### Work `.env` setup
@@ -89,7 +88,6 @@ cp ~/.claude/workflow-server/.env.example ~/.claude/workflow-server/.env
 ├── tmux/          # tmux
 ├── kanata/        # Keyboard remapping
 ├── karabiner/     # Karabiner-Elements
-├── skhd/          # Hotkeys (work-only)
 ├── glove80/       # Glove80 keymap (reference)
 ├── Brewfile       # Homebrew packages
 └── bootstrap.sh   # Post-stow setup (bat themes, zim)
