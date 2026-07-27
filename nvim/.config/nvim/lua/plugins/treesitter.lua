@@ -13,7 +13,7 @@ return {
         'javascript', 'typescript', 'tsx', 'json', 'json5',
         'lua', 'luadoc', 'markdown', 'vim',
         'go', 'gomod', 'gowork', 'gosum',
-        'git_config', 'haskell', 'sql', 'python', 'toml', 'ruby', 'regex', 'latex',
+        'git_config', 'haskell', 'sql', 'python', 'toml', 'ruby', 'regex', 'latex', 'yaml',
         'lean',
       }
 
