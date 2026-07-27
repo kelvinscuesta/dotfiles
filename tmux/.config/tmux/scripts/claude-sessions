@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# List recent Claude Code sessions with project, date, and session ID
+# Usage: claude-sessions [count]  (default: 15)
+
+count="${1:-15}"
+sessions_dir="$HOME/.claude/projects"
+
+if [[ ! -d "$sessions_dir" ]]; then
+  echo "No Claude sessions found at $sessions_dir"
+  exit 1
+fi
+
+echo "Recent Claude Code sessions:"
+echo "────────────────────────────────────────────────────────────────────────"
+printf "%-20s %-44s %s\n" "DATE" "PROJECT" "SESSION ID"
+echo "────────────────────────────────────────────────────────────────────────"
+
+find "$sessions_dir" -name "*.jsonl" -not -path "*/subagents/*" -type f -print0 2>/dev/null \
+  | xargs -0 stat -f '%m %N' 2>/dev/null \
+  | sort -rn \
+  | head -n "$count" \
+  | while read -r mtime filepath; do
+    filename=$(basename "$filepath" .jsonl)
+    project_dir=$(dirname "$filepath")
+    project=$(basename "$project_dir")
+    date_str=$(date -r "$mtime" '+%Y-%m-%d %H:%M')
+    printf "%-20s %-44s %s\n" "$date_str" "$project" "${filename:0:36}"
+  done
+
+echo ""
+echo "Resume: claude --resume <session-id>"
+echo "Latest: claude --continue"
