@@ -1,13 +1,7 @@
 -- Fonts & Colors
 vim.g.have_nerd_font = true -- enable nerd font icons throughout config
-vim.opt.termguicolors = true -- use 24-bit RGB colors in terminal
-
 -- Line Numbers
-vim.opt.number = true -- show absolute line number on current line
 vim.opt.relativenumber = true -- show relative line numbers for easy jumping (e.g., 5j)
-
--- Mouse
-vim.opt.mouse = 'a' -- enable mouse in all modes (normal, visual, insert, command)
 
 -- Mode Display
 vim.opt.showmode = false -- hide mode text (e.g., "-- INSERT --"), statusline handles it
@@ -22,8 +16,6 @@ vim.opt.tabstop = 4 -- number of spaces a <Tab> counts for
 vim.opt.softtabstop = 4 -- number of spaces for <Tab> in editing operations
 vim.opt.shiftwidth = 4 -- number of spaces for each indent level
 vim.opt.expandtab = true -- convert tabs to spaces
-vim.opt.smartindent = true -- auto-indent new lines based on syntax
-
 -- Line Wrapping
 vim.opt.wrap = false -- don't wrap long lines (scroll horizontally instead)
 
@@ -34,17 +26,12 @@ vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir' -- persistent undo history
 vim.opt.undofile = true -- save undo history to file (persists across sessions)
 
 -- Search
-vim.opt.hlsearch = false -- don't highlight all search matches (less visual noise)
-vim.opt.incsearch = true -- show matches as you type search pattern
+vim.opt.hlsearch = true -- highlight search matches, <Esc> clears
 vim.opt.ignorecase = true -- case-insensitive search by default
 vim.opt.smartcase = true -- case-sensitive if search contains uppercase
-vim.opt.inccommand = 'split' -- live preview of :substitute in split window
-
 -- Scrolling & Cursor
 vim.opt.scrolloff = 8 -- keep 8 lines visible above/below cursor when scrolling
 vim.opt.sidescrolloff = 8 -- keep 8 columns visible left/right of cursor
-vim.opt.signcolumn = 'yes' -- always show sign column (prevents text shifting)
-vim.opt.cursorline = true -- highlight the current line
 
 -- Window Splits
 vim.opt.splitright = true -- open vertical splits to the right
