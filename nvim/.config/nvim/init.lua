@@ -4,6 +4,7 @@ vim.loader.enable()
 require 'config.keymap'
 require 'config.options'
 require 'config.autocmds'
+require 'config.lsp'
 require 'config.lazy'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
