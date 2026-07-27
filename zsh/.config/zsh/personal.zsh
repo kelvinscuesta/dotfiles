@@ -102,3 +102,9 @@ eval "$(mise activate zsh)"
 if [[ -z "$TMUX" ]] && [[ $- == *i* ]] && [[ -z "$NO_TMUX" ]]; then
   tmux attach 2>/dev/null || tmux new-session
 fi
+
+# Show recent Claude sessions on first pane of a new tmux session
+# TMUX_PANE=%0 = first pane; avoids re-showing on splits/new windows
+if [[ -n "$TMUX" ]] && [[ "$TMUX_PANE" == "%0" ]] && command -v claude-sessions &>/dev/null; then
+  claude-sessions 5
+fi
