@@ -11,7 +11,6 @@ return {
     'LazyGitFilter', -- open with commit filter
     'LazyGitFilterCurrentFile', -- filter commits for current file
   },
-  dependencies = { 'nvim-lua/plenary.nvim' }, -- for floating window borders
   keys = {
     { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
   },
