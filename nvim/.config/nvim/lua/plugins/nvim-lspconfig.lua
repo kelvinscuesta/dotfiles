@@ -28,18 +28,9 @@ return {
         map('<leader>ca', vim.lsp.buf.code_action, 'Code action', { 'n', 'x' })
         -- gd, gD, gr, gI handled by snacks picker (see snacks.lua)
 
-        -- Helper: check if LSP client supports a method (handles 0.10 vs 0.11 API)
-        local function client_supports_method(client, method, bufnr)
-          if vim.fn.has 'nvim-0.11' == 1 then
-            return client:supports_method(method, bufnr)
-          else
-            return client:supports_method(method, { bufnr = bufnr })
-          end
-        end
-
         -- Document Highlight: highlight other references to symbol under cursor
         local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
           local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
           vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
             buffer = event.buf,
@@ -63,25 +54,23 @@ return {
         end
 
         -- Inlay hints: enable by default, hide in insert mode to avoid text shifting
-        if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+        -- Toggle via snacks <leader>uh
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
           vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
-          map('<leader>th', function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-          end, '[T]oggle Inlay [H]ints')
-        end
 
-        vim.api.nvim_create_autocmd('InsertEnter', {
-          buffer = event.buf,
-          callback = function()
-            vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
-          end,
-        })
-        vim.api.nvim_create_autocmd('InsertLeave', {
-          buffer = event.buf,
-          callback = function()
-            vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
-          end,
-        })
+          vim.api.nvim_create_autocmd('InsertEnter', {
+            buffer = event.buf,
+            callback = function()
+              vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
+            end,
+          })
+          vim.api.nvim_create_autocmd('InsertLeave', {
+            buffer = event.buf,
+            callback = function()
+              vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+            end,
+          })
+        end
       end,
     })
 
