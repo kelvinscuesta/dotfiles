@@ -20,7 +20,7 @@ return {
     opts = {
       ensure_installed = {
         'gopls', 'bashls', 'graphql', 'vtsls', 'eslint',
-        'basedpyright', 'ruff', 'lua_ls',
+        'basedpyright', 'ruff', 'lua_ls', 'texlab',
         'stylua',
       },
     },

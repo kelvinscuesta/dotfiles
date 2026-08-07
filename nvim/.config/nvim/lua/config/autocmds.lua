@@ -86,7 +86,7 @@ vim.api.nvim_create_autocmd('FileType', {
 -- Text files: enable word wrap and spell check
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup 'wrap_spell',
-  pattern = { 'text', 'plaintex', 'typst', 'gitcommit', 'markdown' },
+  pattern = { 'text', 'plaintex', 'tex', 'typst', 'gitcommit', 'markdown' },
   callback = function()
     vim.opt_local.wrap = true -- wrap long lines
     vim.opt_local.spell = true -- highlight misspellings
